@@ -7,7 +7,7 @@ This is the overall strcture of the web app and how each part of the app connect
 
 ## Login/ Register
 The user inputs their username and password to login into their account
-![Login](./ux-design/login.png)
+<img src="./ux-desgin/login.png" alt="App Map Diagram" width="500">
 If the user does not have an account they can register for one that will automaatically log them in
 ![Register](./ux-design/register.png)
 # Home
