@@ -5,6 +5,8 @@ This repository contains instructions and files for two assignments that togethe
 This is the overall strcture of the web app and how each part of the app connects to each other
 ![App Map for QuickList](./ux-design/app_map.png)
 
+## [Link to prototype](https://www.figma.com/proto/R9drmfZLYn61j27wUldn4J/Home-Scheduler?node-id=1-236&p=f&t=C8VFrnYV91aQy0LR-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A545)
+
 ## Login/ Register
 The user inputs their username and password to login into their account if the user does not have an account they can click a link to register for one
 
