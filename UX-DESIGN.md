@@ -6,7 +6,9 @@ This is the overall strcture of the web app and how each part of the app connect
 ![App Map for QuickList](./ux-design/app_map.png)
 
 ## Login/ Register
+The user inputs their username and password to login into their account
 ![Login](./ux-design/login.png)
+If the user does not have an account they can register for one that will automaatically log them in
 ![Register](./ux-design/register.png)
 # Home
 ![Home](./ux-design/home.png)
