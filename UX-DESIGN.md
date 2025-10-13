@@ -9,7 +9,9 @@ This is the overall strcture of the web app and how each part of the app connect
 The user inputs their username and password to login into their account
 <img src="./ux-design/login.png" alt="App Map Diagram" width="500">
 If the user does not have an account they can register for one that will automaatically log them in
-![Register](./ux-design/register.png)
+
+<img src="./ux-design/register.png" alt="App Map Diagram" width="500">
+
 # Home
 ![Home](./ux-design/home.png)
 - [app map & wireframe instructions](instructions-0a-app-map-wireframes.md).
