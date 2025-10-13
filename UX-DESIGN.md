@@ -35,18 +35,35 @@ On the My schedule page you have two options, to either add an event or to edit 
 <img src="./ux-design/Edit_event.png" alt="App Map Diagram" width="500" height= "800">
 
 ## Family Schedule
+<img src="./ux-design/Family_Schedule.png" alt="App Map Diagram" width="500" height= "800">
 
 ### Add Family Event
+<img src="./ux-design/Add_Family_event.png" alt="App Map Diagram" width="500" height= "800">
 
 ### Edit Faimly Event
+<img src="./ux-design/Edit_Damily_Event.png" alt="App Map Diagram" width="500" height= "800">
 
 ## Reminder 
+<img src="./ux-design/Reminders.png" alt="App Map Diagram" width="500" height= "800">
+
 ### Add Reminder
+<img src="./ux-design/Add_Reminder.png" alt="App Map Diagram" width="500" height= "800">
+
 ### Edit Reminder
+<img src="./ux-design/Edit_Reminder.png" alt="App Map Diagram" width="500" height= "800">
+
 ## Settings
+<img src="./ux-design/Settings.png" alt="App Map Diagram" width="500" height= "800">
+
 ### Manage Account
+<img src="./ux-design/Manage_Account.png" alt="App Map Diagram" width="500" height= "800">
+
 ### Join/Create Home
+<img src="./ux-design/Join_Create_Family.png" alt="App Map Diagram" width="500" height= "800">
+
 ### Edit Password
+<img src="./ux-design/Change_Password.png" alt="App Map Diagram" width="500" height= "800">
+
 
 - [app map & wireframe instructions](instructions-0a-app-map-wireframes.md).
 - [prototype instructions](instructions-0b-prototyping.md)
