@@ -95,6 +95,3 @@ on this page the user can set their new password
 
 <img src="./ux-design/Change_Password.png" alt="App Map Diagram" width="500" height= "800">
 
-
-- [app map & wireframe instructions](instructions-0a-app-map-wireframes.md).
-- [prototype instructions](instructions-0b-prototyping.md)
