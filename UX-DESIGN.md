@@ -9,11 +9,12 @@ This is the overall strcture of the web app and how each part of the app connect
 
 ### [Link to prototype](https://www.figma.com/proto/R9drmfZLYn61j27wUldn4J/Home-Scheduler?node-id=1-236&p=f&t=C8VFrnYV91aQy0LR-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A545)
 
-## Login/ Register
+## Login
 The user inputs their username and password to login into their account if the user does not have an account they can click a link to register for one
 
 <img src="./ux-design/login.png" alt="App Map Diagram" width="500" height="800">
 
+## Register
 If the user does not have an account they can register for one that will automaatically log them in
 
 <img src="./ux-design/register.png" alt="App Map Diagram" width="500" height= "800">
