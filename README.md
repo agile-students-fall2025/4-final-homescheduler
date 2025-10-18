@@ -1,19 +1,45 @@
-# Project Repository
 
-This repository will be used for team projects.
+# HomeScheduler
 
-Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
+HomeScheduler is an app designed to help families and households stay organized by sharing calendars, reminders, and to-do lists in one easy-to-use platform.
 
-1. See the [App Map & Wireframes](instructions-0a-app-map-wireframes.md) and [Prototyping](./instructions-0b-prototyping.md) instructions for the requirements of the initial user experience design of the app.
+### Product Vision Statement
+Our vision is to simplify family organization by providing one united platform where every family member can manage scheduled tasks, events, and reminders seamlessly, keeping the household coordinated and connected.
 
-1. Delete the contents of this file and replace with the contents of a proper README.md, as described in the [project setup instructions](./instructions-0c-project-setup.md)
+---
 
-1. See the [Sprint Planning instructions](instructions-0d-sprint-planning.md) for the requirements of Sprint Planning for each Sprint.
+## 🚀 Project Status
 
-1. See the [Front-End Development instructions](./instructions-1-front-end.md) for the requirements of the initial Front-End Development.
+This project is currently in the **UX Design phase**. The initial concept, user flows, and wireframes have been mapped out. Development will begin following the completion of the user experience design.
 
-1. See the [Back-End Development instructions](./instructions-2-back-end.md) for the requirements of the initial Back-End Development.
+---
 
-1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
+## 👥 Core Team
 
-1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
+* **Ava August**: [GitHub](https://github.com/aaugust22)
+* **Brandon Rodriguez**: [GitHub](https://github.com/bbranduhn)
+* **Catherine Gomes**: [GitHub](https://github.com/catherine-g-13)
+* **Jibril Wague**: [GitHub](https://github.com/Jibril1010)
+
+---
+
+## 📜 Project Background & Contributing
+
+### History
+Our team agreed on the need for a simple, centralized solution that helps large families manage shared and individual events seamlessly. We set out to create an app that promotes coordination and communication within busy households.
+
+### Contributing
+We welcome contributions! If you would like to contribute to this project, please read our [**contributing guidelines**](CONTRIBUTING.md) to get started.
+
+---
+
+## ⚙️ Getting Started (Installation & Testing)
+
+This project is currently in the design phase. This section will be updated with installation and testing instructions once development begins.
+
+---
+
+## 📚 Additional Resources
+
+* [Team Norms & Working Agreement](TEAM-NORMS.md)
+* [UX Design Documentation & Wireframes](./ux-design/UX-DESIGN.md)
