@@ -41,5 +41,5 @@ This project is currently in the design phase. This section will be updated with
 
 ## 📚 Additional Resources
 
-* [Team Norms & Working Agreement](TEAM-NORMS.md)
-* [UX Design Documentation & Wireframes](./ux-design/UX-DESIGN.md)
+* [Contibution and work flow](./CONTRIBUTING.md)
+* [UX Design Documentation & Wireframes](./UX-DESIGN.md)
