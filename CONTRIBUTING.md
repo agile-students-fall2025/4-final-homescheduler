@@ -2,23 +2,6 @@
 
 Thank you for considering contributing! This document provides a set of guidelines to help you get started.
 
----
-
-## 📋 Table of Contents
-
-- [Our Values & Process](#our-values--process)
-  - [Team Norms](#team-norms)
-  - [Git Workflow](#git-workflow)
-  - [How to Contribute](#how-to-contribute)
-- [Getting Started: Local Development](#getting-started-local-development)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Building & Testing](#building--testing)
-  - [Running Tests](#running-tests)
-  - [Creating a Production Build](#creating-a-production-build)
-
----
-
 ## 🤝 Our Values & Process
 
 This project and everyone participating in it is governed by a code of conduct. By participating, you are expected to uphold this code.
