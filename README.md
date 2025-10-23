@@ -20,6 +20,7 @@ This project is currently in the **UX Design phase**. The initial concept, user 
 * **Brandon Rodriguez**: [GitHub](https://github.com/bbranduhn)
 * **Catherine Gomes**: [GitHub](https://github.com/catherine-g-13)
 * **Jibril Wague**: [GitHub](https://github.com/Jibril1010)
+* **Alexander Escobar**: [GitHub](https://github.com/EscoAl516)
 
 ---
 
