@@ -1,0 +1,58 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background-color: #eff6ee;
+  }
+
+  .app-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #051D01;
+  }
+  
+  .welcome-box {
+    background-color: #e4e2dd;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+  }
+  
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 80%;
+    max-width: 400px;
+  }
+  
+  .home-button {
+    width: 100%;
+    padding: 16px;
+    background-color: #063204;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .home-button:hover {
+    background-color: #2B5528;
+  }
+  .app-logo {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    
+  }
+  
