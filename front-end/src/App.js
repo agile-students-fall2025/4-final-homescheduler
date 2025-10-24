@@ -19,6 +19,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/myschedule" element={<MyCalendar />} />
+        <Route path="/familyschedule" element={<family_schedule />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/manage-account" element={<Manage_Acc />} />
       </Routes>
