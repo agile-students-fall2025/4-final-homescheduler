@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
 
-export function MyCalendar() {
+export function FamilySchedule() {
     // 1. Event Handlers
     // This function runs when a date is clicked
     const handleDateClick = (arg) => {
