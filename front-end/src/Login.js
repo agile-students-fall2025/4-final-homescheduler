@@ -41,7 +41,14 @@ export function Login() {
       </form>
 
       <p className="signup-link">
-        Don’t have an account? <a href="#">Sign up</a>
+        Don’t have an account?{' '}
+        <span
+          className="link-text"
+          onClick={() => navigate('/signup')}
+          style={{ color: '#2B5528', cursor: 'pointer', textDecoration: 'underline' }}
+        >
+          Sign up
+        </span>
       </p>
     </div>
   );
