@@ -6,6 +6,7 @@ import { EventModal } from './EventMod';
 
 export function MyCalendar() {
    
+  //helper
   
     // 1. Initial Events 
     const [events,setEvents] = useState([]);
@@ -36,21 +37,40 @@ export function MyCalendar() {
       });
     };
     // saving the event
-  const handleSave = (title) => {
-    if (modalState.mode === 'add') {
-      const newEvent = {
-        id: String(Date.now()), 
-        title: title,
-        start: modalState.eventData.startStr,
-        end: modalState.eventData.endStr,
-        allDay: modalState.eventData.allDay,
-      };
-      setEvents([...events, newEvent]);
+    const handleSave = (formData) => {
+      // formData is now { title, location, time }
+      
+      if (modalState.mode === 'add') {
+        const date = modalState.eventData.startStr;
+        const startDateTime = `${date}T${formData.time}:00`; // Combine date and time
+    
+        const newEvent = {
+          id: String(Date.now()),
+          title: formData.title,    // Use formData.title
+          start: startDateTime,
+          allDay: false,
+          extendedProps: {
+            location: formData.location // Use formData.location
+          }
+        };
+        setEvents([...events, newEvent]);
     } else if (modalState.mode === 'edit') {
+      const originalEvent = modalState.eventData;
+      const date = new Date(originalEvent.start).toISOString().substring(0, 10);
+      const startDateTime = `${date}T${formData.time}:00`;
+
       setEvents(
         events.map(event =>
-          event.id === modalState.eventData.id
-            ? { ...event, title: title } 
+          event.id === originalEvent.id
+            ? { 
+                ...event, 
+                title: formData.title, // Use formData.title
+                start: startDateTime,
+                allDay: false,
+                extendedProps: {
+                  location: formData.location // Use formData.location
+                }
+              }
             : event
         )
       );
@@ -102,7 +122,7 @@ export function MyCalendar() {
 
       {modalState.isOpen && (
         <EventModal
-        
+
           event={modalState.mode === 'edit' ? modalState.eventData : null}
           onSave={handleSave}
           onDelete={handleDelete}
