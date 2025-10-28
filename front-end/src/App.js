@@ -8,6 +8,8 @@ import { Signup } from './Signup';
 import { HomePage } from './Homepage';
 import { Settings } from './Settings';
 import { Manage_Acc } from './Manage_Acc';
+import { Change_password } from './Change_password';
+import { Join_family } from './Join_family';
 
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
         <Route path="/myschedule" element={<MyCalendar />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/manage-account" element={<Manage_Acc />} />
+        <Route path="/change_password" element={<Change_password />} />
+        <Route path="/join_fam" element={<Join_family />} />
       </Routes>
     </Router>
       
