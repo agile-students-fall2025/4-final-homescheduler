@@ -1,0 +1,98 @@
+/* Overall container to match HomePage */
+.manage-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background-color: #eff6ee; /* same as HomePage */
+  }
+  
+  .app-logo {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    border-radius: 10px;
+  }
+  
+  .name-login-form {
+    width: 175px;
+    font-size: 29px;
+    color: #051D01;
+    margin-bottom: 20px;
+    text-align: left;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .name-login-form label {
+    font-weight: 600;
+    color: #063204;
+  }
+  
+  .name-login-form input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+  
+  .name-login-form input:focus {
+    border-color: #2B5528;
+  }
+  .email-login-form {
+    width: 175px;
+    font-size: 29px;
+    color: #051D01;
+    margin-bottom: 20px;
+    text-align: left;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .email-login-form label {
+    font-weight: 600;
+    color: #063204;
+  }
+  
+  .email-login-form input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+  
+  .email-login-form input:focus {
+    border-color: #2B5528;
+  }
+  
+  /* Login button matching HomePage buttons */
+  .change_password_button {
+    width: 175px;
+    padding: 12px;
+    background-color: #063204;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+    .update_info_button {
+    width: 175px;
+    padding: 12px;
+    background-color: #063204;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  

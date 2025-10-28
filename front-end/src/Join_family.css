@@ -1,0 +1,83 @@
+.join-fam {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background-color: #eff6ee; /* same as HomePage */
+  }
+
+.app-logo {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    border-radius: 10px;
+  }
+  .create-button {
+    width: 175px;
+    padding: 12px;
+    background-color: #063204;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .code-form {
+    width: 175px;
+    font-size: 29px;
+    color: #051D01;
+    margin-bottom: 20px;
+    text-align: left;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+.code-form label {
+  font-weight: 600;
+  font-size: 17px;
+  color: #063204;
+  text-align: center;
+  line-height: 1.4;
+}
+
+  
+.code-form input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+  
+.code-form input:focus {
+    border-color: #2B5528;
+  }
+
+
+/* Make labels smaller and clean */
+.or-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 500;
+  color: #063204;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.or-text::before,
+.or-text::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #063204;
+  margin: 0 10px;
+  max-width: 40%;
+}
