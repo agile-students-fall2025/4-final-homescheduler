@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import './MyCalender.css'
 import { MyCalendar } from './MyCalender';
+import { EventModal } from './EventMod';
 import { FamilySchedule } from './FamilySchedule';
 import { Login } from './Login';
 import { Signup } from './Signup';
