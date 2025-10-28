@@ -18,12 +18,12 @@ export function MyCalendar() {
   
     // --- Event Handlers ---
   
-    // 1. Open "Add Event" modal when a date is selected
+    // Open "Add Event" modal when a date is selected
     const handleSelect = (selectInfo) => {
       setModalState({
         isOpen: true,
         mode: 'add',
-        eventData: selectInfo, // Pass the date info to the modal
+        eventData: selectInfo,
       });
     };
   
@@ -32,14 +32,14 @@ export function MyCalendar() {
       setModalState({
         isOpen: true,
         mode: 'edit',
-        eventData: clickInfo.event, // Pass the event object to the modal
+        eventData: clickInfo.event, 
       });
     };
-    // 3. Handle saving the event (both add and edit)
+    // saving the event
   const handleSave = (title) => {
     if (modalState.mode === 'add') {
       const newEvent = {
-        id: String(Date.now()), // Simple unique ID
+        id: String(Date.now()), 
         title: title,
         start: modalState.eventData.startStr,
         end: modalState.eventData.endStr,
@@ -50,20 +50,20 @@ export function MyCalendar() {
       setEvents(
         events.map(event =>
           event.id === modalState.eventData.id
-            ? { ...event, title: title } // Find event and update its title
+            ? { ...event, title: title } 
             : event
         )
       );
     }
     closeModal();
   };
-   // 4. Handle deleting an event
+   //delete an event
   const handleDelete = () => {
     setEvents(events.filter(event => event.id !== modalState.eventData.id));
     closeModal();
   };
 
-  // 5. Handle drag-and-drop updates
+  //drag and drop update
   const handleEventChange = (changeInfo) => {
     setEvents(
       events.map(event =>
@@ -78,7 +78,8 @@ export function MyCalendar() {
   const closeModal = () => {
     setModalState({ isOpen: false, mode: 'add', eventData: null });
   };
-  ////
+
+
   return (
     <div className="calendar-wrapper">
       <FullCalendar
@@ -90,19 +91,18 @@ export function MyCalendar() {
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         }}
         
-        events={events} // Read events from state
+        events={events} 
         selectable={true}
-        editable={true} // Allows drag-and-drop
+        editable={true} 
         
-        select={handleSelect} // Triggers "Add Event" modal
-        eventClick={handleEventClick} // Triggers "Edit Event" modal
-        eventChange={handleEventChange} // Handles drag-and-drop
+        select={handleSelect} 
+        eventClick={handleEventClick} 
+        eventChange={handleEventChange} 
       />
 
-      {/* Render the modal component if isOpen is true */}
       {modalState.isOpen && (
         <EventModal
-          // Pass the event object if editing, or null if adding
+        
           event={modalState.mode === 'edit' ? modalState.eventData : null}
           onSave={handleSave}
           onDelete={handleDelete}

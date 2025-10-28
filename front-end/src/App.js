@@ -7,7 +7,6 @@ import { EventModal } from './EventMod';
 function App() {
   return (
    <div>
-      <EventModal></EventModal>
       <MyCalendar></MyCalendar>
     </div>
   );

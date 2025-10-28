@@ -1,7 +1,7 @@
 .calendar-wrapper {
     /* 1. Set a maximum width */
     max-width: 1000px; /* Adjust this value to your desired maximum size */
-    width: 50%; /* Ensures it scales down nicely on smaller screens */
+    width: 30%; /* Ensures it scales down nicely on smaller screens */
 
     /* 2. Center the calendar horizontally */
     margin-left: auto;
