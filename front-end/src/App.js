@@ -11,6 +11,7 @@ import { Settings } from './Settings';
 import { Manage_Acc } from './Manage_Acc';
 import { Change_password } from './Change_password';
 import { Join_family } from './Join_family';
+import Reminder from './Reminder';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/manage-account" element={<Manage_Acc />} />
         <Route path="/change_password" element={<Change_password />} />
         <Route path="/join_fam" element={<Join_family />} />
+        <Route path='/Reminders' element = {<Reminder />} />
       </Routes>
     </Router>
       
