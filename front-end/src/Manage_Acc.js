@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Manage_Acc.css'
 import logo from './logo.png';
+
 import { useNavigate } from 'react-router-dom'
 
 export function Manage_Acc(){
@@ -12,14 +13,14 @@ export function Manage_Acc(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate('/change password');
+        navigate('/change_password');
     };
 
     return (
         <div className="manage-container">
 
             <img src={logo} alt="App Logo" className="app-logo" />
-            <h1 className="app-title">
+            <h1 className="acc-title">
                 Manage Account
             </h1>
 
@@ -51,10 +52,10 @@ export function Manage_Acc(){
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button type='submit' className="change-password">
+                <button type = 'submit' className="change_password_button" onClick={() => navigate('/change_password')}>
                     Change Password
                 </button>
-                <button type='submit' className="update-info">
+                <button type='button' className="update_info_button">
                     Update Information
                 </button>
             </form>

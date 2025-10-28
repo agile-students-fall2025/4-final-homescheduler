@@ -17,7 +17,7 @@ export function Settings() {
                 <button className = "setting-button" onClick={() => navigate('/manage-account')}>
                     Manage Account
                 </button>
-                <button className = "setting-button" onClick={() => navigate('/join-create')}>
+                <button className = "setting-button" onClick={() => navigate('/join_fam')}>
                     Join or Create Family Schedule
                 </button>
             </div>
