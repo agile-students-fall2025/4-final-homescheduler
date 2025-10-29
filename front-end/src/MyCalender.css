@@ -14,3 +14,23 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+
+
+#mySchedule{
+    font-size: 30px;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 5px;
+ 
+ 
+ }
+ #instruction{
+    font-size: 15px;
+    text-align: center;
+    margin-top: 1px;
+ 
+ 
+ }
+ 
+ 
