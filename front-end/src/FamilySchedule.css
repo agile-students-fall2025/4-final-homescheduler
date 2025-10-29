@@ -1,84 +1,37 @@
 .calendar-wrapper {
-    /* 1. Set a maximum width */
-    max-width: 1000px; /* Adjust this value to your desired maximum size */
-    width: 80%; /* Ensures it scales down nicely on smaller screens */
+    
+    max-width: 1000px; 
+    width: 30%;
 
-    /* 2. Center the calendar horizontally */
+
     margin-left: auto;
     margin-right: auto;
-    margin-top: 20px; /* Add some space above/below */
+    margin-top: 20px; 
+    margin-bottom: 100px;
+    font-size: 15px;
 
-    /* 3. Add visual separation (optional) */
     padding: 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.popup-form {
-    background: rgb(255, 255, 255);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 500px;
-    padding: 100px;
-    border-radius: 10px;
-}
-.popup-form form{
-    background: rgb(255, 255, 255);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 20px;
-    align-items: center;
-}
-.popup-form input[type="datetime-local"]{
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-.popup-form input[type="text"]{
-    font-size: 20px;
-    width: 20 px;
-    margin-bottom: 5px;
-}
 
-.popup-form button{
-    padding: 10px;
-    margin-top: 1px;
-    
-    
-    border: none;
-    width : 200px;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-}
-.popup-background{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
 
-    
-    background-color: rgba(0, 0, 0, 0.45);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-#addButton {
-    width: 130px;
-    padding: 5px;
-    font-size: 17px;
-    text-align: center;
-    margin-bottom: 20px;
-    
-
-}
 
 #familySchedule{
-    font-size: 35px;
-    text-align: left;
-
-}
+    font-size: 30px;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 5px;
+ 
+ 
+ }
+ #instruction{
+    font-size: 15px;
+    text-align: center;
+    margin-top: 1px;
+ 
+ 
+ }
+ 
+ 

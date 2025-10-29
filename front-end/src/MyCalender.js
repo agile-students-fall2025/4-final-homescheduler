@@ -3,6 +3,8 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventModal } from './EventMod';
+import './MyCalender.css';
+
 
 export function MyCalendar() {
    
@@ -102,14 +104,12 @@ export function MyCalendar() {
 
   return (
     <div className="calendar-wrapper">
+      <h2 id = "mySchedule">My Schedule</h2>
+      <p id = "instruction">Select a date to add / edit an event.</p>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        headerToolbar={{
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        }}
+        
         
         events={events} 
         selectable={true}
@@ -129,6 +129,7 @@ export function MyCalendar() {
           onClose={closeModal}
         />
       )}
+      
     </div>
   );
 }
