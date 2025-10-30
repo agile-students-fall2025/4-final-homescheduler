@@ -17,11 +17,7 @@ export function HomePage() {
 
       <div className="button-group">
         <button className="home-button" onClick={() => navigate('/myschedule')}>
-          My Schedule
-        </button>
-
-        <button className="home-button" onClick={() => navigate('/familyschedule')}>
-          Family Schedule
+          Master Schedule
         </button>
 
         <button className="home-button" onClick={() => navigate('/reminders')}>

@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventModal } from './EventMod';
 import './MyCalender.css';
-
+import { NavMenu } from "./NavMenu";
 
 export function MyCalendar() {
    
@@ -104,8 +104,9 @@ export function MyCalendar() {
 
   return (
     <div className="calendar-wrapper">
-      <h2 id = "mySchedule">My Schedule</h2>
+      <h2 id = "mySchedule">Schedule</h2>
       <p id = "instruction">Select a date to add / edit an event.</p>
+      <NavMenu />
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -119,6 +120,10 @@ export function MyCalendar() {
         eventClick={handleEventClick} 
         eventChange={handleEventChange} 
       />
+      <div className="reminder-section">
+      <h3>Reminders</h3>
+        <p className="no-reminders">No reminders yet. Add one in Reminders page!</p>
+    </div>
 
       {modalState.isOpen && (
         <EventModal
@@ -131,5 +136,7 @@ export function MyCalendar() {
       )}
       
     </div>
+    
   );
+  
 }

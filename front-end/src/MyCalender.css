@@ -1,36 +1,119 @@
-.calendar-wrapper {
-    /* 1. Set a maximum width */
-    max-width: 1000px; /* Adjust this value to your desired maximum size */
-    width: 30%; /* Ensures it scales down nicely on smaller screens */
+body {
+    background-color: #eff6ee;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
 
-    /* 2. Center the calendar horizontally */
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20px; /* Add some space above/below */
+  .calendar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    min-width: 800px;
+    min-height: 400px;
+    background-color: #eff6ee;
+    position: relative;
+  }
+  
+  #mySchedule {
+    font-size: 28px;
+    color: #051D01;
+    margin: 10px 0;
+  }
+  
+  #instruction {
+    color: #051D01;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .fc {
+    background-color: #e4e2dd;
+    border-radius: 12px;
+    padding: 18px;
+    width: 90%;
+    min-height: 600px;
+    max-width: 900px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.12);
+  }
+  
+  .fc .fc-toolbar-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #051D01;
+  }
+  
+  .fc .fc-button {
+    background-color: #063204 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+    font-size: 14px;
+    padding: 6px 10px;
+    transition: 0.3s;
+  }
+  
+  .fc .fc-button:hover {
+    background-color: #2B5528 !important;
+  }
+  
+  .fc-daygrid-day {
+    border-radius: 6px;
+    background-color: #ffffff;
+    transition: 0.2s;
+  }
+  
+  .fc-daygrid-day:hover {
+    background-color: #dfe8d9;
+  }
+  
+  .fc .fc-day-today {
+    background-color: #c6d4c1 !important;
+    border-radius: 6px;
+  }
+  
+  .fc-event {
+    background-color: #063204 !important;
+    border: none !important;
+    border-radius: 6px;
+    padding: 2px 4px;
+    font-size: 12px;
+    color: white !important;
+  }
 
-    /* 3. Add visual separation (optional) */
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  .fc-event:hover {
+    opacity: 0.85;
+    cursor: pointer;
+  }
+.fc .fc-view-harness,
+.fc .fc-view-harness > .fc-view,
+.fc .fc-daygrid {
+  height: 100% !important;
 }
 
-
-
-#mySchedule{
-    font-size: 30px;
+.fc .fc-scroller {
+  height: 100% !important;
+}
+.reminder-section {
+    width: 90%;
+    max-width: 900px;
+    background-color: #e4e2dd;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 40px auto 20px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.12);
+  }
+  
+  .reminder-section h3 {
+    font-size: 22px;
+    color: #051D01;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .no-reminders {
+    color: #051D01;
     text-align: center;
     font-style: italic;
-    margin-bottom: 5px;
- 
- 
- }
- #instruction{
-    font-size: 15px;
-    text-align: center;
-    margin-top: 1px;
- 
- 
- }
- 
- 
+  }

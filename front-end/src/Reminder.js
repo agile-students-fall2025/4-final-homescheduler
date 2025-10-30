@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Reminder.css";
 import logo from './logo.png';
+import { NavMenu } from "./NavMenu";
 
 export default function Reminder() {
   const [form, setForm] = useState({
@@ -61,6 +62,7 @@ export default function Reminder() {
   return (
         /*This is the image on the top */
     <div className="reminder-page">
+      <NavMenu />
       <header className="reminder-header">
         <img className="app-logo" src={logo} alt = "AppLogo"/>
       </header>
@@ -178,11 +180,6 @@ export default function Reminder() {
           </div>
         </form>
       </main>
-
-      <footer className="reminder-footer">
-        <a className="nav-btn" href="/">Home</a>
-        <a className="nav-btn" href="/family">Family<br/>Schedule</a>
-      </footer>
     </div>
   );
 }
