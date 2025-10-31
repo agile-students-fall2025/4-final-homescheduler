@@ -2,12 +2,15 @@ import React from 'react';
 import './Settings.css';
 import logo from './logo.png';
 import { useNavigate } from 'react-router-dom';
+import { NavMenu } from "./NavMenu";
+
 
 export function Settings() {
     const navigate = useNavigate();
 
     return (
         <div className = "setting-container">
+            <NavMenu />
             <img src={logo} alt="App Logo" className="app-logo" />
             <h1 className="app-title">
                 Settings
