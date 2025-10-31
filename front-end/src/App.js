@@ -9,10 +9,10 @@ import { Login } from './Login';
 import { Signup } from './Signup';
 import { HomePage } from './Homepage';
 import { Settings } from './Settings';
-import { Manage_Acc } from './Manage_Acc';
-import { Change_password } from './Change_password';
-import { Join_family } from './Join_family';
+import { ManageAcc } from './ManageAcc';
+import { ChangePassword } from './ChangePassword';
 import Reminder from './Reminder';
+import { JoinFamily } from './JoinFamily';
 
 
 function App() {
@@ -26,9 +26,9 @@ function App() {
         <Route path="/myschedule" element={<MyCalendar />} />
         <Route path="/familyschedule" element={<FamilySchedule />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/manage-account" element={<Manage_Acc />} />
-        <Route path="/change_password" element={<Change_password />} />
-        <Route path="/join_fam" element={<Join_family />} />
+        <Route path="/manage-account" element={<ManageAcc />} />
+        <Route path="/change_password" element={<ChangePassword />} />
+        <Route path="/join_fam" element={<JoinFamily />} />
         <Route path='/Reminders' element = {<Reminder />} />
       </Routes>
     </Router>

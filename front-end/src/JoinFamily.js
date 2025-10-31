@@ -1,8 +1,8 @@
 import React, { useState} from 'react';
 import logo from './logo.png';
-import './Join_family.css'
+import './JoinFamily.css'
 
-export function Join_family(){
+export function JoinFamily(){
 
     const [joinFam, setjoinCode] = useState('');
     const [famName, setfamCode] = useState('')

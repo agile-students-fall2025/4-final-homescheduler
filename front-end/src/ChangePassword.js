@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import logo from './logo.png';
-import './Change_password.css'
+import './ChangePassword.css'
 
-export function Change_password(){
+export function ChangePassword(){
     const [currpassword, setcurrPassword] = useState('');
     const [newpassword, setnewPassword] = useState('');
     const [confpassword, setConfPassword] = useState('');

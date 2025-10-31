@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import './Manage_Acc.css'
+import './ManageAcc.css'
 import logo from './logo.png';
 
 import { useNavigate } from 'react-router-dom'
 
-export function Manage_Acc(){
+export function ManageAcc(){
     const [firstName, setFName] = useState('');
     const [lastName, setLName] = useState('');
     const [email, setEmail] = useState('');
