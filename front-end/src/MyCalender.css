@@ -25,7 +25,7 @@ body {
   #instruction {
     color: #051D01;
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   
   .fc {
@@ -116,4 +116,57 @@ body {
     color: #051D01;
     text-align: center;
     font-style: italic;
+  }
+  .calendar-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 15px;       
+    margin: 15px ;  
+    margin-top: 5px;
+  }
+
+  .my-cal {
+    background-color: #afc79c;
+    border: none !important;
+    border-radius: 6px !important;
+    color: #4a643f !important;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 6px 10px;
+    transition: 0.3s;
+    
+  }
+  .my-cal:hover {
+    background-color: #cadcbc;
+    cursor: pointer;
+ 
+  }
+  .fam-cal {
+    
+    background-color: #d1e4c7;
+    border: none !important;
+    border-radius: 6px !important;
+    color: #4a643f !important;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 6px 10px;
+    transition: 0.3s;
+  }
+  .fam-cal:hover {
+    background-color: rgb(229, 245, 217);
+    cursor: pointer;
+  }
+  .com-cal {
+    background-color: #9bb093;
+    border: none !important;
+    border-radius: 6px !important;
+    color: #4a643f !important;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 6px 10px;
+    transition: 0.3s;
+  }
+  .com-cal:hover {
+    background-color: #c2d2bc;
+    cursor: pointer;
   }
