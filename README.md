@@ -36,8 +36,44 @@ We welcome contributions! If you would like to contribute to this project, pleas
 
 ## ⚙️ Getting Started (Installation & Testing)
 
-This project is currently in the design phase. This section will be updated with installation and testing instructions once development begins.
+Currently there is only frontend code so only react and some of its dependices need to be downloaded
+### 1. Installation & Setup
 
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/your-username/your-repository.git](https://github.com/your-username/your-repository.git)
+    ```
+
+2.  **Navigate to the project directory:**
+    ```bash
+    cd your-repository
+    ```
+    **Navigate to the front-end directory**
+    ```bash
+    cd front-end
+    ```
+3.  **Install dependencies:**
+    This command will install React, FullCalendar, and all other necessary packages.
+    ```bash
+    npm install
+    ```
+
+### 2. Running the Application
+
+1.  **Start the development server:**
+    ```bash
+    npm start
+    ```
+
+2.  Open your browser and navigate to `http://localhost:3000` to see the application.
+
+### 3. Running Tests
+
+1.  **Launch the test runner:**
+    This will run any tests you've created for the application.
+    ```bash
+    npm test
+    ```
 ---
 
 ## 📚 Additional Resources
