@@ -7,11 +7,12 @@ const formatTime = (date) => {
   return new Date(date).toTimeString().substring(0, 5); 
 };
 
-export function EventModal({ event, onSave, onDelete, onClose }) {
+export function EventModal({ event, onSave, onDelete, onClose, currentUser }) {
   
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const [time, setTime] = useState('09:00');
+
 
   const isEditing = !!event;
 
@@ -43,7 +44,14 @@ export function EventModal({ event, onSave, onDelete, onClose }) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         
         <div className="modal-header">
+        <div className="header-left">
           <h2>{isEditing ? 'Edit Event' : 'Add Event'}</h2>
+          {currentUser && (
+            <p className="user">
+              Added by {currentUser}
+            </p>
+          )}
+          </div>
           <button className="close-button" onClick={onClose}>&times;</button>
         </div>
 

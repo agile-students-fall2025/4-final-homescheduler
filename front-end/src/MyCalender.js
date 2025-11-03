@@ -7,6 +7,7 @@ import './MyCalender.css';
 import { NavMenu } from "./NavMenu";
 
 export function MyCalendar() {
+  const currentUser = "[user]"
    
   //helper
   
@@ -52,7 +53,8 @@ export function MyCalendar() {
           start: startDateTime,
           allDay: false,
           extendedProps: {
-            location: formData.location // Use formData.location
+            location: formData.location, // Use formData.location
+            createdBy: currentUser
           }
         };
         setEvents([...events, newEvent]);
@@ -70,7 +72,8 @@ export function MyCalendar() {
                 start: startDateTime,
                 allDay: false,
                 extendedProps: {
-                  location: formData.location // Use formData.location
+                  location: formData.location, // Use formData.location
+                  createdBy: currentUser
                 }
               }
             : event
@@ -107,6 +110,12 @@ export function MyCalendar() {
       <h2 id = "mySchedule">Schedule</h2>
       <p id = "instruction">Select a date to add / edit an event.</p>
       <NavMenu />
+      <div className="calendar-toggle">
+    
+  <button className="my-cal">My Calendar</button>
+  <button className="fam-cal">Family Calendar</button>
+  <button className="com-cal">Combined Calendar</button>
+  </div>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -132,6 +141,7 @@ export function MyCalendar() {
           onSave={handleSave}
           onDelete={handleDelete}
           onClose={closeModal}
+          currentUser={currentUser}
         />
       )}
       
