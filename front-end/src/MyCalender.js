@@ -54,7 +54,7 @@ export function MyCalendar() {
           allDay: false,
           extendedProps: {
             location: formData.location, // Use formData.location
-            createdBy: "[username]"
+            createdBy: currentUser
           }
         };
         setEvents([...events, newEvent]);
@@ -73,7 +73,7 @@ export function MyCalendar() {
                 allDay: false,
                 extendedProps: {
                   location: formData.location, // Use formData.location
-                  createdBy: "[username]"
+                  createdBy: currentUser
                 }
               }
             : event
