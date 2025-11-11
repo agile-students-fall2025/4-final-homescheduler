@@ -1,8 +1,22 @@
-// import and instantiate express
-const express = require("express") // CommonJS import style!
-const app = express() // instantiate an Express object
+const express = require('express');
+const cors = require('cors'); // We'll need this to let React talk to the server
 
-// we will put some server logic here later...
+//import routers
+const eventRoutes = require('./controllers/calender');
 
-// export the express app we created to make it available to other modules
-module.exports = app
+const app = express();
+const PORT = 3001; 
+
+
+app.use(cors());
+
+app.use(express.json());
+
+// Routers
+app.use('/api/events', eventRoutes);
+
+
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
