@@ -7,12 +7,12 @@ const formatTime = (date) => {
   return new Date(date).toTimeString().substring(0, 5); 
 };
 
-export function EventModal({ event, onSave, onDelete, onClose, currentUser }) {
+export function EventModal({ event, onSave, onDelete, onClose}) {
   
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const [time, setTime] = useState('09:00');
-
+  const [user, setUser] = useState(null);
 
   const isEditing = !!event;
 
@@ -23,11 +23,15 @@ export function EventModal({ event, onSave, onDelete, onClose, currentUser }) {
       setTitle(event.title);
       setLocation(event.extendedProps.location || '');
       setTime(formatTime(event.start));
+
+      setUser(event.extendedProps.user || 'Unknown');
+
     } else {
       // We are in 'Add' mode
       setTitle('');
       setLocation('');
       setTime('09:00');
+      setUser(null);
     }
   }, [event]); 
   
@@ -46,11 +50,8 @@ export function EventModal({ event, onSave, onDelete, onClose, currentUser }) {
         <div className="modal-header">
         <div className="header-left">
           <h2>{isEditing ? 'Edit Event' : 'Add Event'}</h2>
-          {currentUser && (
-            <p className="user">
-              Added by {currentUser}
-            </p>
-          )}
+          {isEditing && user && <p className="user">Added by {user}</p>}
+          
           </div>
           <button className="close-button" onClick={onClose}>&times;</button>
         </div>
