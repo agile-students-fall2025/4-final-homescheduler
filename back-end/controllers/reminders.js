@@ -10,6 +10,7 @@ let reminders = [
     notes: "",
     repeat: [],
     notify: "off",
+    done: false,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
     },
@@ -19,6 +20,7 @@ let reminders = [
     notes: "Chapters 3-5",
     repeat: ["Daily"],
     notify: "30m",
+    done: false,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
     }
@@ -88,6 +90,7 @@ router.post("/", (req, res) => {
     notes: notes ?? "",
     repeat: Array.isArray(repeat) ? repeat : [],
     notify: notify ?? "off",
+    done: typeof done === "boolean" ? done : false,
     createdAt: now,
     updatedAt: now
   };
@@ -126,10 +129,34 @@ router.put("/:id", (req, res) => {
     notes: notes ?? current.notes,
     repeat: Array.isArray(repeat) ? repeat : current.repeat,
     notify: notify ?? current.notify,
+    done: typeof done === "boolean" ? done : current.done,
     updatedAt: new Date().toISOString()
   };
 
   // Replace the old one in memory
+  reminders[idx] = updated;
+
+  res.json(updated);
+});
+
+router.patch("/:id", (req, res) => {
+  const { id } = req.params;
+  const { done } = req.body || {};
+
+  const idx = reminders.findIndex(r => r.id === id);
+  if (idx === -1) {
+    return res.status(404).json({ error: "Reminder not found" });
+  }
+
+  const current = reminders[idx];
+
+  // Toggle or set done field
+  const updated = {
+    ...current,
+    done: typeof done === "boolean" ? done : current.done,
+    updatedAt: new Date().toISOString()
+  };
+
   reminders[idx] = updated;
 
   res.json(updated);
