@@ -8,14 +8,36 @@ export function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/home');
-  };
+  
+    try {
+      const res = await fetch("http://localhost:3001/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Login failed");
+        return;
+      }
+
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      navigate("/home");
+    } 
+    catch (err) {
+      alert("Server not responding");
+      console.error(err);
+    }
+  };  
 
   return (
     <div className="login-container">
-        <img src={logo} alt="App Logo" className="app-logo" />
+      <img src={logo} alt="App Logo" className="app-logo" />
       <h2 className="login-title">Login</h2>
 
       <form onSubmit={handleSubmit} className="login-form">

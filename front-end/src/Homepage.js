@@ -6,13 +6,16 @@ import { useNavigate } from 'react-router-dom';
 export function HomePage() {
   const navigate = useNavigate();
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user?.name || "Guest";
+
   return (
     <div className="home-container">
       <img src={logo} alt="App Logo" className="app-logo" />
       <h1 className="app-title">Home Scheduler</h1>
 
       <div className="welcome-box">
-        <p>Welcome [username]!</p>
+        <p>Welcome {username}!</p>
       </div>
 
       <div className="button-group">
