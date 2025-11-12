@@ -11,9 +11,35 @@ export function ManageAcc(){
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        navigate('/change_password');
+
+        if (!firstName || !lastName || !email || !password){
+            alert("Please fill in all fields");
+            return; 
+        }
+        try {
+            const res = await fetch('http://localhost:3001/api/family/manage-account',{
+                method: "POST",
+                headers: {"Content-type": "application/json"},
+                body: JSON.stringify({
+                    firstName,
+                    lastName,
+                    email,
+                    password
+                }),
+            });
+
+            const data = await res.json();
+            if (!res.ok){
+                alert(data.message || "Verification failed");
+                return;
+            }
+            navigate('/change_password');
+        }catch(err){
+            console.error("Fetch error:", err);
+            alert("Server not responding");
+        }
     };
 
     return (
@@ -52,7 +78,7 @@ export function ManageAcc(){
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button type = 'submit' className="change_password_button" onClick={() => navigate('/change_password')}>
+                <button type = 'submit' className="change_password_button">
                     Change Password
                 </button>
                 <button type='button' className="update_info_button">
