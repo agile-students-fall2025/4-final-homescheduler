@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1762878654166",
+    "email": "Ava.august@gmail.com",
+    "passwordHash": "$2b$10$KJOcYHNYFnEW8g3h6RTPH.DYiq134Wo550WSk3YrY92h8iLcaHibO",
+    "name": "Ava August"
+  },
+  {
+    "id": "1762878725755",
+    "email": "z@gmail.com",
+    "passwordHash": "$2b$10$ssu5NCRnmz.U7rjryVEzdubvJ2cFGl76Hrd/VAk.f.FSdKW/KCoZ6",
+    "name": "zzz zzz"
+  },
+  {
+    "id": "1762912349258",
+    "email": "brandonrogo04@gmail.com",
+    "passwordHash": "$2b$10$5wMSa87eKMfXczdJo1hDNu6na4i/Su2LDJb0M7Ur3bwkK3tBxfUTu",
+    "name": "Brandon Rodriguez"
+  }
+]
