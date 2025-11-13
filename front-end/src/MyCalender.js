@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -13,6 +13,67 @@ export function MyCalendar() {
   
     // 1. Initial Events 
     const [events,setEvents] = useState([]);
+
+        // Reminders state
+    const [reminders, setReminders] = useState([]);
+    const [loadingRem, setLoadingRem] = useState(false);
+    const [errRem, setErrRem] = useState("");
+
+    // --- Fetch reminders ---
+    const fetchReminders = async () => {
+      try {
+        setLoadingRem(true);
+        setErrRem("");
+        // Adjust this URL to match your backend route
+        const res = await fetch(`http://localhost:3001/api/reminders?user=${encodeURIComponent(currentUser)}`, {
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        // Expect each reminder like: { id, title, dueAt, notes?, done? }
+        setReminders(Array.isArray(data) ? data : []);
+      } catch (e) {
+        setErrRem("Couldn't load reminders.");
+        console.error(e);
+      } finally {
+        setLoadingRem(false);
+      }
+    };
+
+    useEffect(() => {
+      fetchReminders();
+      // Optional: auto-refresh every 60s so new backend reminders pop in
+      const t = setInterval(fetchReminders, 60000);
+      return () => clearInterval(t);
+    }, []);
+
+    // Small helpers
+    const fmt = (iso) => new Date(iso).toLocaleString();
+    const msUntil = (iso) => new Date(iso).getTime() - Date.now();
+
+    const sortedReminders = useMemo(() => {
+      return [...reminders].sort((a, b) => new Date(a.dueAt) - new Date(b.dueAt));
+    }, [reminders]);
+
+    const dueSoon = (r) => msUntil(r.dueAt) <= 1000 * 60 * 60 && msUntil(r.dueAt) > 0; // within 1h
+
+    const toggleDone = async (r) => {
+      try {
+        // Adjust to your backend verb/route
+        const res = await fetch(`http://localhost:3001/api/reminders/${r.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ done: !r.done })
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        setReminders((prev) =>
+          prev.map((x) => (x.id === r.id ? { ...x, done: !r.done } : x))
+        );
+      } catch (e) {
+        console.error(e);
+        alert("Failed to update reminder.");
+      }
+    };
 
     const [modalState, setModalState] = useState({
       isOpen: false,
@@ -130,9 +191,38 @@ export function MyCalendar() {
         eventChange={handleEventChange} 
       />
       <div className="reminder-section">
-      <h3>Reminders</h3>
-        <p className="no-reminders">No reminders yet. Add one in Reminders page!</p>
-    </div>
+        <h3>Reminders</h3>
+
+        {loadingRem && <p className="no-reminders">Loading…</p>}
+        {errRem && <p className="no-reminders">{errRem}</p>}
+
+        {!loadingRem && !errRem && sortedReminders.length === 0 && (
+          <p className="no-reminders">No reminders yet. Add one in Reminders page!</p>
+        )}
+
+        {!loadingRem && !errRem && sortedReminders.length > 0 && (
+          <ul className="reminder-list">
+            {sortedReminders.map((r) => (
+              <li key={r.id} className={`reminder-item ${r.done ? 'done' : ''}`}>
+                <div className="reminder-title-row">
+                  <input
+                    type="checkbox"
+                    checked={!!r.done}
+                    onChange={() => toggleDone(r)}
+                    aria-label="mark reminder done"
+                  />
+                  <span className="reminder-title">{r.title}</span>
+                  {dueSoon(r) && <span className="reminder-badge">Due soon</span>}
+                </div>
+                <div className="reminder-meta">
+                  <span className="reminder-due">Due: {fmt(r.dueAt)}</span>
+                  {r.notes ? <span className="reminder-notes"> · {r.notes}</span> : null}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {modalState.isOpen && (
         <EventModal

@@ -170,3 +170,90 @@ body {
     background-color: #c2d2bc;
     cursor: pointer;
   }
+  /* --- Reminders: compact card list --- */
+.reminder-section {
+  /* keep your existing styles, just tighten spacing a bit */
+  padding: 14px;
+}
+
+.reminder-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+/* each reminder card */
+.reminder-item {
+  background: #ffffff;
+  border: 1px solid #d5d2c9;
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: grid;
+  gap: 4px;
+  transition: box-shadow .2s ease, transform .06s ease;
+}
+
+.reminder-item:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  transform: translateY(-1px);
+}
+
+.reminder-item.done {
+  opacity: .6;
+  text-decoration: line-through;
+}
+
+/* title row with checkbox + title + badge */
+.reminder-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* title text */
+.reminder-title {
+  color: #051D01;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* “Due soon” pill */
+.reminder-badge {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid #9bb093;
+  background: #eaf3e6;
+  color: #4a643f;
+}
+
+/* meta row: due date + optional notes */
+.reminder-meta {
+  font-size: 12px;
+  color: #324a2c;
+  opacity: .85;
+}
+
+/* keep “no reminders” text subtle */
+.no-reminders {
+  color: #051D01;
+  text-align: center;
+  font-style: italic;
+  opacity: .85;
+}
+
+/* responsive: two columns on wider screens */
+@media (min-width: 700px) {
+  .reminder-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* match your green palette for checkbox focus (optional) */
+.reminder-title-row input[type="checkbox"]:focus {
+  outline: 2px solid #9bb093;
+  outline-offset: 2px;
+}
