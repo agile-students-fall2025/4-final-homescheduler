@@ -25,7 +25,7 @@ export function MyCalendar() {
         setLoadingRem(true);
         setErrRem("");
         // Adjust this URL to match your backend route
-        const res = await fetch(`http://localhost:3000/api/reminders?user=${encodeURIComponent(currentUser)}`, {
+        const res = await fetch(`http://localhost:3001/api/reminders?user=${encodeURIComponent(currentUser)}`, {
           headers: { 'Content-Type': 'application/json' }
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -60,7 +60,7 @@ export function MyCalendar() {
     const toggleDone = async (r) => {
       try {
         // Adjust to your backend verb/route
-        const res = await fetch(`/api/reminders/${r.id}`, {
+        const res = await fetch(`http://localhost:3001/api/reminders/${r.id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ done: !r.done })
