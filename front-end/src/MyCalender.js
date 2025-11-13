@@ -17,134 +17,80 @@ console.log("--- MySchedule component file was loaded ---");
 export function MyCalendar() {
   console.log("--- MySchedule component IS RENDERING ---")
 
-<<<<<<< HEAD
+
   const [events, setEvents] = useState([]);
+  // Reminders state
+  const [reminders, setReminders] = useState([]);
+  const [loadingRem, setLoadingRem] = useState(false);
+  const [errRem, setErrRem] = useState("");
+
   const [modalState, setModalState] = useState({
     isOpen: false,
     mode: 'add', // 'add' or 'edit'
     eventData: null, // Holds data for adding or event object for editing
   });
-  const myEvents = events.filter(
+
+  const myEvents = useMemo(
+    () =>
+      events.filter(
     (e) => e.extendedProps?.user === CURRENT_USER &&
-    e.extendedProps?.isFamily === false || 
-    typeof e.extendedProps?.isFamily === 'undefined'
-  );
-  // --- Data Fetching ---
-  // 1. Fetch events from the backend when the component mounts
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-=======
-        // Reminders state
-    const [reminders, setReminders] = useState([]);
-    const [loadingRem, setLoadingRem] = useState(false);
-    const [errRem, setErrRem] = useState("");
-
-    // --- Fetch reminders ---
-    const fetchReminders = async () => {
-      try {
-        setLoadingRem(true);
-        setErrRem("");
-        // Adjust this URL to match your backend route
-        const res = await fetch(`http://localhost:3001/api/reminders?user=${encodeURIComponent(currentUser)}`, {
-          headers: { 'Content-Type': 'application/json' }
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        // Expect each reminder like: { id, title, dueAt, notes?, done? }
-        setReminders(Array.isArray(data) ? data : []);
-      } catch (e) {
-        setErrRem("Couldn't load reminders.");
-        console.error(e);
-      } finally {
-        setLoadingRem(false);
-      }
-    };
-
-    useEffect(() => {
-      fetchReminders();
-      // Optional: auto-refresh every 60s so new backend reminders pop in
-      const t = setInterval(fetchReminders, 60000);
-      return () => clearInterval(t);
-    }, []);
-
-    // Small helpers
-    const fmt = (iso) => new Date(iso).toLocaleString();
-    const msUntil = (iso) => new Date(iso).getTime() - Date.now();
-
-    const sortedReminders = useMemo(() => {
-      return [...reminders].sort((a, b) => new Date(a.dueAt) - new Date(b.dueAt));
-    }, [reminders]);
-
-    const dueSoon = (r) => msUntil(r.dueAt) <= 1000 * 60 * 60 && msUntil(r.dueAt) > 0; // within 1h
-
-    const toggleDone = async (r) => {
-      try {
-        // Adjust to your backend verb/route
-        const res = await fetch(`http://localhost:3001/api/reminders/${r.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ done: !r.done })
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        setReminders((prev) =>
-          prev.map((x) => (x.id === r.id ? { ...x, done: !r.done } : x))
-        );
-      } catch (e) {
-        console.error(e);
-        alert("Failed to update reminder.");
-      }
-    };
-
-    const [modalState, setModalState] = useState({
-      isOpen: false,
-      mode: 'add', // 'add' or 'edit'
-      eventData: null, // Holds data for adding or event object for editing
-    });
-  
-    // --- Event Handlers ---
-  
-    // Open "Add Event" modal when a date is selected
-    const handleSelect = (selectInfo) => {
-      setModalState({
-        isOpen: true,
-        mode: 'add',
-        eventData: selectInfo,
+    (e.extendedProps?.isFamily === false || 
+    typeof e.extendedProps?.isFamily === 'undefined')
+  ),
+  [events]
+);
+  // --- Fetch reminders ---
+  const fetchReminders = async () => {
+    try {
+      setLoadingRem(true);
+      setErrRem("");
+      // Adjust this URL to match your backend route
+      const res = await fetch(
+        `${API_URL}/reminders?user=${encodeURIComponent(CURRENT_USER)}`, 
+      {
+        headers: { 'Content-Type': 'application/json' }
       });
-    };
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      // Expect each reminder like: { id, title, dueAt, notes?, done? }
+      setReminders(Array.isArray(data) ? data : []);
+    } catch (e) {
+      setErrRem("Couldn't load reminders.");
+      console.error(e);
+    } finally {
+      setLoadingRem(false);
+    }
+  };
+
   
-    // 2. Open "Edit Event" modal when an event is clicked
-    const handleEventClick = (clickInfo) => {
-      setModalState({
-        isOpen: true,
-        mode: 'edit',
-        eventData: clickInfo.event, 
+
+  // Small helpers
+  const fmt = (iso) => new Date(iso).toLocaleString();
+  const msUntil = (iso) => new Date(iso).getTime() - Date.now();
+
+  const sortedReminders = useMemo(() => {
+    return [...reminders].sort((a, b) => new Date(a.dueAt) - new Date(b.dueAt));
+  }, [reminders]);
+
+  const dueSoon = (r) => msUntil(r.dueAt) <= 1000 * 60 * 60 && msUntil(r.dueAt) > 0; // within 1h
+
+  const toggleDone = async (r) => {
+    try {
+      // Adjust to your backend verb/route
+      const res = await fetch(`http://localhost:3001/api/reminders/${r.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ done: !r.done })
       });
-    };
-    // saving the event
-    const handleSave = (formData) => {
-      // formData is now { title, location, time }
-      
-      if (modalState.mode === 'add') {
-        const date = modalState.eventData.startStr;
-        const startDateTime = `${date}T${formData.time}:00`; // Combine date and time
-    
-        const newEvent = {
-          id: String(Date.now()),
-          title: formData.title,    // Use formData.title
-          start: startDateTime,
-          allDay: false,
-          extendedProps: {
-            location: formData.location, // Use formData.location
-            createdBy: currentUser
-          }
-        };
-        setEvents([...events, newEvent]);
-    } else if (modalState.mode === 'edit') {
-      const originalEvent = modalState.eventData;
-      const date = new Date(originalEvent.start).toISOString().substring(0, 10);
-      const startDateTime = `${date}T${formData.time}:00`;
->>>>>>> master
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setReminders((prev) =>
+        prev.map((x) => (x.id === r.id ? { ...x, done: !r.done } : x))
+      );
+    } catch (e) {
+      console.error(e);
+      alert("Failed to update reminder.");
+    }
+  };
 
   const fetchEvents = async () => {
     try {
@@ -159,7 +105,20 @@ export function MyCalendar() {
       // You could set an error state here to show the user
     }
   };
+   // --- Data Fetching ---
+  // 1. Fetch events from the backend when the component mounts
 
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    fetchReminders();
+    // Optional: auto-refresh every 60s so new backend reminders pop in
+    const t = setInterval(fetchReminders, 60000);
+    return () => clearInterval(t);
+  }, []);
+ 
   // --- Event Handlers ---
 
   // Open "Add Event" modal
@@ -343,8 +302,7 @@ export function MyCalendar() {
         eventClick={handleEventClick}
         eventChange={handleEventChange} // Called on drag/drop
       />
-<<<<<<< HEAD
-=======
+
       <div className="reminder-section">
         <h3>Reminders</h3>
 
@@ -378,7 +336,6 @@ export function MyCalendar() {
           </ul>
         )}
       </div>
->>>>>>> master
 
       {modalState.isOpen && (
         <EventModal

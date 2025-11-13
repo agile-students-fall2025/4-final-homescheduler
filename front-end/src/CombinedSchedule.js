@@ -10,10 +10,10 @@ import { Link } from "react-router-dom";
 const API_URL = 'http://localhost:3001/api';
 
 export const CURRENT_USER = 'Me';
-console.log("--- FamilySchedule component file was loaded ---");
+console.log("--- CombinedSchedule component file was loaded ---");
 
 export function CombinedSchedule() {
-  console.log("--- FamilySchedule component IS RENDERING ---")
+  console.log("--- CombinedSchedule component IS RENDERING ---")
 
   const [events, setEvents] = useState([]);
   const [modalState, setModalState] = useState({
