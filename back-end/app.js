@@ -4,6 +4,8 @@ const cors = require('cors'); // We'll need this to let React talk to the server
 //import routers
 const userRoutes = require('./controllers/userControl');
 const eventRoutes = require('./controllers/calender');
+const reminderRoutes = require('./controllers/reminders');
+
 const familyRoutes = require('./controllers/passwordControl');
 
 const app = express();
@@ -17,6 +19,9 @@ app.use(express.json());
 // Routers
 app.use('/api/users', userRoutes);
 app.use('/api/events', eventRoutes);
+app.use('/api/reminders', reminderRoutes);
+
+
 app.use('/api/family', familyRoutes);
 
 app.listen(PORT, () => {

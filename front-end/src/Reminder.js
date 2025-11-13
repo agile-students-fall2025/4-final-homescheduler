@@ -28,25 +28,51 @@ export default function Reminder() {
   };
 
 
-  //This handleSubmit sends a popup if there is nothing placed in the boxes.
-  const handleSubmit = (e) => {
-    e.preventDefault();
+// This handleSubmit sends the data to the backend API
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // rudimentary validation
-    if (!form.title.trim()) {
-      alert("Please enter a reminder title.");
+  // rudimentary validation
+  if (!form.title.trim()) {
+    alert("Please enter a reminder title.");
+    return;
+  }
+  if (!(form.month && form.day && form.year && form.time)) {
+    alert("Please fill in date and time.");
+    return;
+  }
+
+  // Build the payload for backend
+  const payload = {
+    title: form.title,
+    month: form.month,
+    day: form.day,
+    year: form.year,
+    time: form.time,
+    notes: form.notes,
+    repeat: form.repeat,
+    notify: form.notify,
+  };
+
+  try {
+    const res = await fetch("http://localhost:3001/api/reminders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      console.error("Failed to create reminder:", err);
+      alert("Failed to create reminder.");
       return;
     }
-    if (!(form.month && form.day && form.year && form.time)) {
-      alert("Please fill in date and time.");
-      return;
-    }
 
-    // You can wire this to your back-end later:
-    console.log("Reminder payload:", form);
-    alert("Reminder added! (Check console for payload)");
+    const newReminder = await res.json();
+    console.log("Reminder created:", newReminder);
+    alert("Reminder added successfully!");
 
-    // clear form
+    // clear form after successful submission
     setForm({
       title: "",
       month: "",
@@ -57,7 +83,12 @@ export default function Reminder() {
       repeat: [],
       notify: "",
     });
-  };
+  } catch (error) {
+    console.error("Network or server error:", error);
+    alert("Could not connect to the server.");
+  }
+};
+
 
   return (
         /*This is the image on the top */
