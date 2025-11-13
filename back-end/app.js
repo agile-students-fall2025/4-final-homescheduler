@@ -6,6 +6,7 @@ const userRoutes = require('./controllers/userControl');
 const eventRoutes = require('./controllers/calender');
 const reminderRoutes = require('./controllers/reminders');
 
+const familyRoutes = require('./controllers/passwordControl');
 
 const app = express();
 const PORT = 3001; 
@@ -21,6 +22,7 @@ app.use('/api/events', eventRoutes);
 app.use('/api/reminders', reminderRoutes);
 
 
+app.use('/api/family', familyRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
