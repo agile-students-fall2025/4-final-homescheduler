@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventModal } from './EventMod';
-import './MyCalender.css';
+import './FamilySchedule.css';
 import { NavMenu } from "./NavMenu";
 import { Link } from "react-router-dom";
 
 const API_URL = 'http://localhost:3001/api';
 
-
 export const CURRENT_USER = 'Me';
-console.log("--- MySchedule component file was loaded ---");
+console.log("--- FamilySchedule component file was loaded ---");
 
-export function MyCalendar() {
-  console.log("--- MySchedule component IS RENDERING ---")
+export function CombinedSchedule() {
+  console.log("--- FamilySchedule component IS RENDERING ---")
 
   const [events, setEvents] = useState([]);
   const [modalState, setModalState] = useState({
@@ -23,10 +22,9 @@ export function MyCalendar() {
     eventData: null, // Holds data for adding or event object for editing
   });
   const myEvents = events.filter(
-    (e) => e.extendedProps?.user === CURRENT_USER &&
-    e.extendedProps?.isFamily === false || 
-    typeof e.extendedProps?.isFamily === 'undefined'
-  );
+     (e) => e.extendedProps?.user === CURRENT_USER &&
+     e.extendedProps?.isFamily === true
+   );
   // --- Data Fetching ---
   // 1. Fetch events from the backend when the component mounts
   useEffect(() => {
@@ -119,7 +117,6 @@ export function MyCalendar() {
         extendedProps: {
           ...originalEvent.extendedProps,
           location: formData.location,
-          isFamily: false
           // We don't update the 'user' here, as we're just editing.
           // You could add an 'lastEditedBy' field if you wanted.
         },
@@ -203,7 +200,7 @@ export function MyCalendar() {
 
   return (
     <div className="calendar-wrapper">
-      <h2 id="mySchedule">My Calendar</h2>
+      <h2 id="familySchedule">Combined Calendar</h2>
       <p id="instruction">Select a date to add / edit an event.</p>
       <NavMenu />
             <div className="calendar-toggle">
@@ -223,7 +220,7 @@ export function MyCalendar() {
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={myEvents} // Events now come from state, which is fed by the API
+        events={events} // Events now come from state, which is fed by the API
         selectable={true}
         editable={true} // Enables drag-and-drop
         select={handleSelect}

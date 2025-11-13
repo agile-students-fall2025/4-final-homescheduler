@@ -4,10 +4,13 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventModal } from './EventMod';
 import './FamilySchedule.css';
+import { NavMenu } from "./NavMenu";
+import { Link } from "react-router-dom";
 
 const API_URL = 'http://localhost:3001/api';
 
-export const CURRENT_USER = 'Alice';
+export const CURRENT_USER = 'Me';
+//export const CURRENT_USER = localStorage.getItem("userName");
 console.log("--- FamilySchedule component file was loaded ---");
 
 export function FamilySchedule() {
@@ -19,6 +22,9 @@ export function FamilySchedule() {
     mode: 'add', // 'add' or 'edit'
     eventData: null, // Holds data for adding or event object for editing
   });
+  const familyEvents = events.filter(
+     (e) => e.extendedProps?.isFamily === true
+   );
   // --- Data Fetching ---
   // 1. Fetch events from the backend when the component mounts
   useEffect(() => {
@@ -79,6 +85,7 @@ export function FamilySchedule() {
         start: startDateTime,
         location: formData.location,
         user: CURRENT_USER, // Add the current user
+        isFamily: true,
       };
 
       try {
@@ -193,12 +200,27 @@ export function FamilySchedule() {
 
   return (
     <div className="calendar-wrapper">
-      <h2 id="familySchedule">Family Schedule</h2>
+      <h2 id="familySchedule">Family Calendar</h2>
       <p id="instruction">Select a date to add / edit an event.</p>
+      <NavMenu />
+            <div className="calendar-toggle">
+          
+        
+<Link to="/myschedule">
+  <button className="my-cal">My Calendar</button>
+</Link>
+  <Link to="/familyschedule">
+  <button className="fam-cal">Family Calendar</button>
+</Link>
+<Link to="/combinedschedule">
+  <button className="com-cal">Combined Calendar</button>
+  </Link>
+
+        </div>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={events} // Events now come from state, which is fed by the API
+        events={familyEvents} // Events now come from state, which is fed by the API
         selectable={true}
         editable={true} // Enables drag-and-drop
         select={handleSelect}
