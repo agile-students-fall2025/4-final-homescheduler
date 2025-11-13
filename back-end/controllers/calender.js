@@ -12,6 +12,7 @@ let events = [
       extendedProps: {
         location: 'Conference Room B',
         user: 'Alice',
+        isFamily: true,
       },
     },
     {
@@ -22,6 +23,7 @@ let events = [
       extendedProps: {
         location: 'Downtown Dental',
         user: 'Bob',
+        isFamily: true,
       },
     },
   ];
@@ -38,7 +40,7 @@ router.get('/', (req, res) => {
   router.post('/', (req, res) => {
     console.log('POST /api/events', req.body);
   
-    const { title, start, location, user } = req.body;
+    const { title, start, location, user, isFamily } = req.body;
   
     if (!title || !start || !user) {
       return res
@@ -55,6 +57,7 @@ router.get('/', (req, res) => {
       extendedProps: {
         location: location || '',
         user: user, 
+        isFamily: !!isFamily,
       },
     };
   

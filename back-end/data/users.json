@@ -16,5 +16,11 @@
     "email": "brandonrogo04@gmail.com",
     "passwordHash": "$2b$10$5wMSa87eKMfXczdJo1hDNu6na4i/Su2LDJb0M7Ur3bwkK3tBxfUTu",
     "name": "Brandon Rodriguez"
+  },
+  {
+    "id": "1763049098948",
+    "email": "cg3994@nyu.edu",
+    "passwordHash": "$2b$10$cvWgkUQR2tFhNVH3eNnrWuabr2XVeYY8lbRW2Ype8TlzeGIk5JbYu",
+    "name": "Catherine Gomes"
   }
 ]
