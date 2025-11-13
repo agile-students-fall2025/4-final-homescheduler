@@ -5,6 +5,7 @@ import './MyCalender.css'
 import { MyCalendar } from './MyCalender';
 import { EventModal } from './EventMod';
 import { FamilySchedule } from './FamilySchedule';
+import { CombinedSchedule } from './CombinedSchedule';
 import { Login } from './Login';
 import { Signup } from './Signup';
 import { HomePage } from './Homepage';
@@ -25,6 +26,7 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/myschedule" element={<MyCalendar />} />
         <Route path="/familyschedule" element={<FamilySchedule />} />
+        <Route path="/combinedschedule" element={<CombinedSchedule />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/manage-account" element={<ManageAcc />} />
         <Route path="/change_password" element={<ChangePassword />} />

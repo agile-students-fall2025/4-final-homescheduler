@@ -10,11 +10,10 @@ import { Link } from "react-router-dom";
 const API_URL = 'http://localhost:3001/api';
 
 export const CURRENT_USER = 'Me';
-//export const CURRENT_USER = localStorage.getItem("userName");
-console.log("--- FamilySchedule component file was loaded ---");
+console.log("--- CombinedSchedule component file was loaded ---");
 
-export function FamilySchedule() {
-  console.log("--- FamilySchedule component IS RENDERING ---")
+export function CombinedSchedule() {
+  console.log("--- CombinedSchedule component IS RENDERING ---")
 
   const [events, setEvents] = useState([]);
   const [modalState, setModalState] = useState({
@@ -22,8 +21,9 @@ export function FamilySchedule() {
     mode: 'add', // 'add' or 'edit'
     eventData: null, // Holds data for adding or event object for editing
   });
-  const familyEvents = events.filter(
-     (e) => e.extendedProps?.isFamily === true
+  const myEvents = events.filter(
+     (e) => e.extendedProps?.user === CURRENT_USER &&
+     e.extendedProps?.isFamily === true
    );
   // --- Data Fetching ---
   // 1. Fetch events from the backend when the component mounts
@@ -85,7 +85,7 @@ export function FamilySchedule() {
         start: startDateTime,
         location: formData.location,
         user: CURRENT_USER, // Add the current user
-        isFamily: true,
+        isFamily: false,
       };
 
       try {
@@ -200,7 +200,7 @@ export function FamilySchedule() {
 
   return (
     <div className="calendar-wrapper">
-      <h2 id="familySchedule">Family Calendar</h2>
+      <h2 id="familySchedule">Combined Calendar</h2>
       <p id="instruction">Select a date to add / edit an event.</p>
       <NavMenu />
             <div className="calendar-toggle">
@@ -220,7 +220,7 @@ export function FamilySchedule() {
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={familyEvents} // Events now come from state, which is fed by the API
+        events={events} // Events now come from state, which is fed by the API
         selectable={true}
         editable={true} // Enables drag-and-drop
         select={handleSelect}
