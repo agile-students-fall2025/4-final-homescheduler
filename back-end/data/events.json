@@ -1,0 +1,24 @@
+[
+  {
+    "id": "f1be346a-199e-46fb-a5cb-0165ff502b70",
+    "title": "Moving Day",
+    "start": "2025-11-20T09:00:00",
+    "allDay": false,
+    "extendedProps": {
+      "location": "",
+      "user": "Me",
+      "isFamily": true
+    }
+  },
+  {
+    "id": "3b54f70d-a670-4cbe-b1b3-301dc2123690",
+    "title": "Gym",
+    "start": "2025-11-14T18:00:00",
+    "allDay": false,
+    "extendedProps": {
+      "location": "Planet Fitness",
+      "user": "Me",
+      "isFamily": false
+    }
+  }
+]
