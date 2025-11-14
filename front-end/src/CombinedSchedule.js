@@ -22,7 +22,7 @@ export function CombinedSchedule() {
     eventData: null, // Holds data for adding or event object for editing
   });
   const myEvents = events.filter(
-     (e) => e.extendedProps?.user === CURRENT_USER &&
+     (e) => e.extendedProps?.user === CURRENT_USER ||
      e.extendedProps?.isFamily === true
    );
   // --- Data Fetching ---
@@ -220,7 +220,7 @@ export function CombinedSchedule() {
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={events} // Events now come from state, which is fed by the API
+        events={myEvents} // Events now come from state, which is fed by the API
         selectable={true}
         editable={true} // Enables drag-and-drop
         select={handleSelect}
