@@ -22,5 +22,11 @@
     "email": "cg3994@nyu.edu",
     "passwordHash": "$2b$10$cvWgkUQR2tFhNVH3eNnrWuabr2XVeYY8lbRW2Ype8TlzeGIk5JbYu",
     "name": "Catherine Gomes"
+  },
+  {
+    "id": "1763258807099",
+    "email": "red@gmail",
+    "passwordHash": "$2b$10$5ZJiXiTiiwoIBIOtbZtHPO9vnjUlOphx9OTKK7/pxWYb1egETbRlK",
+    "name": "Jibril Wague"
   }
 ]

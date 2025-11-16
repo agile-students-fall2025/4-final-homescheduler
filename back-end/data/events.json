@@ -20,5 +20,27 @@
       "user": "Me",
       "isFamily": false
     }
+  },
+  {
+    "id": "3f1e10d0-2bf0-40c9-8c7f-3422d98abacd",
+    "title": "coode",
+    "start": "2025-11-07T09:00:00",
+    "allDay": false,
+    "extendedProps": {
+      "location": "",
+      "user": "Me",
+      "isFamily": true
+    }
+  },
+  {
+    "id": "15d23b08-c5a2-4e3d-bf5d-bbe9a6e6f50a",
+    "title": "zaza",
+    "start": "2025-11-06T09:00:00",
+    "allDay": false,
+    "extendedProps": {
+      "location": "za",
+      "user": "Me",
+      "isFamily": false
+    }
   }
 ]
