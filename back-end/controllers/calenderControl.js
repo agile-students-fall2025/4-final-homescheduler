@@ -56,7 +56,7 @@ exports.getEvents =  async (req, res) => {
 
     let allEvents = readEvents()
     let eventFound = false;
-    events = events.map((event) => {
+    allEvents = allEvents.map((event) => {
       if (event.id === id) {
         eventFound = true;
         return { ...event, ...updatedEventData };
@@ -81,7 +81,7 @@ exports.getEvents =  async (req, res) => {
     const eventIndex = eventData.findIndex((event) => event.id === id);
   
     if (eventIndex === -1) {
-      res.status(404).json({ error: 'Event not found' });
+      return res.status(404).json({ error: 'Event not found' });
     }
     eventData.splice(eventIndex, 1);
     writeEvents(eventData);

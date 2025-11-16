@@ -24,6 +24,8 @@ app.use('/api/reminders', reminderRoutes);
 
 app.use('/api/family', familyRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+//app.listen(PORT, () => {
+//  console.log(`Server is running on http://localhost:${PORT}`);
+//});
+
+module.exports = app;
