@@ -81,7 +81,7 @@ describe('Event API (/api/events)', () => {
       expect(res.body.error).to.equal('Missing required fields: title, start, user');
     });
   });
-//catherine
+  
  // update event test case
  describe('PUT /api/events/:id', () => {
   it('should update a preexisting event', async () => {
