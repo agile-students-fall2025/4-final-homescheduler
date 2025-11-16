@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom';
 
 export function HomePage() {
   const navigate = useNavigate();
-
-  const user = JSON.parse(localStorage.getItem("user"));
+  
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser && storedUser !== "null" ? JSON.parse(storedUser) : null;
   const username = user?.name || "Guest";
 
   return (

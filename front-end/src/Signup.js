@@ -44,6 +44,7 @@ export function Signup() {
         alert(data.message || "Signup failed");
         return;
       }
+      localStorage.setItem("user", JSON.stringify(data.user));
 
       navigate("/home");
     }
