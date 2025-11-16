@@ -60,9 +60,21 @@ Currently there is only frontend code so only react and some of its dependices n
 
 ### 2. Running the Application
 
-1.  **Start the development server:**
+1.  **Start the Frontend server:**
+    ```bash
+    cd front-end
+    ```
+    **Start the Frontend server:**
     ```bash
     npm start
+    ```
+    ## In another terminal
+    **Start the development server:**
+    ```bash
+    cd back-end
+    ```
+    ```bash
+    cd node server.js
     ```
 
 2.  Open your browser and navigate to `http://localhost:3000` to see the application.
@@ -71,6 +83,9 @@ Currently there is only frontend code so only react and some of its dependices n
 
 1.  **Launch the test runner:**
     This will run any tests you've created for the application.
+     ```bash
+    cd back-end
+    ```
     ```bash
     npm test
     ```
