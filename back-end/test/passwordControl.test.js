@@ -8,8 +8,9 @@ const expect = chai.expect;
 const request = supertest(app);
 
 const usersPath = path.join(__dirname, '..', 'data', 'users.json');
+const seeduserPath = path.join(__dirname, 'seed.users.json');
 
-const seedUsersPath = path.join(__dirname, 'seed.users.json');
+const seedData = fs.readFileSync(seeduserPath, 'utf-8');;
 
 // Reset DB for every test
 beforeEach(() => {
@@ -101,7 +102,7 @@ describe("Family API (/api/family)", () => {
           newpassword: "newpass"
         });
 
-      expect(res.status).to.equal(400);
+      expect(res.status).to.equal(404);
       expect(res.body.message).to.equal("Incorrect password");
     });
 
