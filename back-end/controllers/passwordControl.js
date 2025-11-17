@@ -7,7 +7,7 @@ const { cwd } = require('process');
 
 const router = express.Router();
 
-const usersPath = path.join(process.cwd(), 'data', 'users.json');
+const usersPath = path.join(__dirname, '..', 'data', 'users.json');
 
 const readUsers = () => {
   if (!fs.existsSync(usersPath)) return [];
@@ -59,7 +59,7 @@ router.post('/change_password', async(req, res) => {
 
     const userPassword = await bcrypt.compare(currpassword, user.passwordHash);
     if (!userPassword){
-        return res.status(400).json({message: "Incorrect password"});
+        return res.status(404).json({message: "Incorrect password"});
     }
 
     user.passwordHash = await bcrypt.hash(newpassword, 10);
