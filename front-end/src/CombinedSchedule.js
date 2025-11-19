@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 
 const API_URL = 'http://localhost:3001/api';
 
-export const CURRENT_USER = 'Me';
 console.log("--- CombinedSchedule component file was loaded ---");
 
 export function CombinedSchedule() {
@@ -21,6 +20,10 @@ export function CombinedSchedule() {
     mode: 'add', // 'add' or 'edit'
     eventData: null, // Holds data for adding or event object for editing
   });
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const CURRENT_USER = userData?.name;
+
+  // Only events that correspond to user OR family events
   const myEvents = events.filter(
      (e) => e.extendedProps?.user === CURRENT_USER ||
      e.extendedProps?.isFamily === true

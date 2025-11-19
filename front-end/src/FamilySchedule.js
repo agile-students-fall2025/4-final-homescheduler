@@ -9,12 +9,15 @@ import { Link } from "react-router-dom";
 
 const API_URL = 'http://localhost:3001/api';
 
-export const CURRENT_USER = 'Me';
-//export const CURRENT_USER = localStorage.getItem("userName");
+
 console.log("--- FamilySchedule component file was loaded ---");
 
 export function FamilySchedule() {
   console.log("--- FamilySchedule component IS RENDERING ---")
+
+  // Access user data to fill out newEventData 
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const CURRENT_USER = userData?.name;
 
   const [events, setEvents] = useState([]);
   const [modalState, setModalState] = useState({
@@ -23,6 +26,7 @@ export function FamilySchedule() {
     eventData: null, // Holds data for adding or event object for editing
   });
   const familyEvents = events.filter(
+    // Only family filter matters 
      (e) => e.extendedProps?.isFamily === true
    );
   // --- Data Fetching ---
