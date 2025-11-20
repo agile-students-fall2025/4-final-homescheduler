@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -10,13 +10,13 @@ import { Link } from "react-router-dom";
 
 const API_URL = 'http://localhost:3001/api';
 
-
-export const CURRENT_USER = 'Me';
 console.log("--- MySchedule component file was loaded ---");
+
+// Replaced all instances of CURRENT_USER = "Me"
+// Locally accesses user data to create event & filter events
 
 export function MyCalendar() {
   console.log("--- MySchedule component IS RENDERING ---")
-
 
   const [events, setEvents] = useState([]);
   // Reminders state
@@ -24,23 +24,27 @@ export function MyCalendar() {
   const [loadingRem, setLoadingRem] = useState(false);
   const [errRem, setErrRem] = useState("");
 
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const CURRENT_USER = userData?.name;
+
   const [modalState, setModalState] = useState({
     isOpen: false,
     mode: 'add', // 'add' or 'edit'
     eventData: null, // Holds data for adding or event object for editing
   });
 
-  const myEvents = useMemo(
-    () =>
-      events.filter(
-    (e) => e.extendedProps?.user === CURRENT_USER &&
-    (e.extendedProps?.isFamily === false || 
-    typeof e.extendedProps?.isFamily === 'undefined')
-  ),
-  [events]
-);
+  const myEvents = useMemo(() => {
+  return events.filter(
+    (e) =>
+      // Events with user that corresponds to current user and no family events
+      e.extendedProps?.user === CURRENT_USER &&
+      (e.extendedProps?.isFamily === false ||
+       typeof e.extendedProps?.isFamily === 'undefined')
+  );
+}, [events, CURRENT_USER]);
+
   // --- Fetch reminders ---
-  const fetchReminders = async () => {
+  const fetchReminders = useCallback( async () => {
     try {
       setLoadingRem(true);
       setErrRem("");
@@ -60,7 +64,7 @@ export function MyCalendar() {
     } finally {
       setLoadingRem(false);
     }
-  };
+  },[CURRENT_USER]);
 
   
 
@@ -117,7 +121,7 @@ export function MyCalendar() {
     // Optional: auto-refresh every 60s so new backend reminders pop in
     const t = setInterval(fetchReminders, 60000);
     return () => clearInterval(t);
-  }, []);
+  }, [fetchReminders]);
  
   // --- Event Handlers ---
 
@@ -153,6 +157,9 @@ export function MyCalendar() {
       // --- CREATE ---
       const date = modalState.eventData.startStr;
       const startDateTime = `${date}T${formData.time}:00`;
+
+      const userData = JSON.parse(localStorage.getItem("user"));
+      const CURRENT_USER = userData?.name;
 
       const newEventData = {
         title: formData.title,
