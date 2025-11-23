@@ -23,7 +23,7 @@ export function Settings() {
                 <button className = "setting-button" onClick={() => navigate('/join_fam')}>
                     Join or Create Family Schedule
                 </button>
-                <button className = "logout-button" onClick={() => navigate('/')}>
+                <button className = "logout-button" onClick={() => {localStorage.removeItem("token"); navigate('/');}}>
                     LogOut
                 </button>
             </div>
