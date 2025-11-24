@@ -17,6 +17,17 @@
     cursor: pointer;
     transition: 0.3s;
   }
+    .logout-button {
+    width: 100%;
+    padding: 16px;
+    background-color: #ea1313;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
   .app-logo {
     width: 180px;
     height: 180px;
