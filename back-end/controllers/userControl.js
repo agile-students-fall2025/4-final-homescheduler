@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const auth = require('../authentication');
 
 const router = express.Router();
 
@@ -42,14 +43,18 @@ router.post('/signup', async (req, res) => {
   users.push(newUser);
   writeUsers(users);
 
+  const token = jwt.sign({ id: newUser.id }, "dev_secret_key");
+
   res.status(201).json({
     message: "Account created successfully!",
     user: {
       id: newUser.id,
       email: newUser.email,
       name: newUser.name,
+      token,
     },
   });
+
 });
 
 router.post('/login', async (req, res) => {
@@ -78,6 +83,14 @@ router.post('/login', async (req, res) => {
       token,
     },
   });
+
+  router.get('/me', auth, (req, res) => {
+    res.json({
+      message: "Protected route accessed!",
+      user: req.user
+    });
+  });
+  
 });
 
 module.exports = router;

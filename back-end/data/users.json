@@ -1,9 +1,14 @@
 [
-    {
-      "id": "1",
-      "email": "existing@test.com",
-      "passwordHash": "$2b$10$XsNUVoXTSTipNKyyZndFbO.sC8hZhADfy9/HQikQVrMSeuXybRaaG", 
-      "name": "Existing User"
-    }
-  ]
-  
+  {
+    "id": "1",
+    "email": "existing@test.com",
+    "passwordHash": "$2b$10$XsNUVoXTSTipNKyyZndFbO.sC8hZhADfy9/HQikQVrMSeuXybRaaG",
+    "name": "Existing User"
+  },
+  {
+    "id": "1764016778918",
+    "email": "aca9900@nyu.edu",
+    "passwordHash": "$2b$10$2l73qmwpm9bubzi5M0qOaOTfnqTPNZXN.gwI/YhuGcVTtRAIL8bDa",
+    "name": "Zach August"
+  }
+]
