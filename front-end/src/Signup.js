@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Signup.css';
 import logo from './logo.png';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export function Signup() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -13,9 +15,33 @@ export function Signup() {
     confirmPassword: ''
   });
 
+  const [passwordChecks, setPasswordChecks] = useState({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    special: false
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Validate password in real time
+  const validatePassword = (pw) => {
+    setPasswordChecks({
+      length: pw.length >= 8,
+      uppercase: /[A-Z]/.test(pw),
+      lowercase: /[a-z]/.test(pw),
+      special: /[^A-Za-z0-9]/.test(pw)
+    });
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "password") {
+      validatePassword(value);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -23,6 +49,13 @@ export function Signup() {
 
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
+      return;
+    }
+
+    // Prevent weak passwords
+    const allChecksPassed = Object.values(passwordChecks).every(Boolean);
+    if (!allChecksPassed) {
+      alert("Your password does not meet all requirements.");
       return;
     }
 
@@ -44,16 +77,20 @@ export function Signup() {
         alert(data.message || "Signup failed");
         return;
       }
+
       localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("token", data.user.token);
 
       navigate("/home");
-    }
+    } 
     catch (err) {
       alert("Server not responding");
       console.error(err);
     }
   };
+
+  const strengthPercent =
+    Object.values(passwordChecks).filter(Boolean).length * 25;
 
   return (
     <div className="login-container">
@@ -89,22 +126,64 @@ export function Signup() {
         />
 
         <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          placeholder="Enter password"
-          value={formData.password}
-          onChange={handleChange}
-        />
+        <div className="password-wrapper">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Enter password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <span
+            className="toggle-password"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ?  <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+
+
+        {/* Password Checklist */}
+        <div className="password-checklist">
+          <p className={passwordChecks.length ? "valid" : "invalid"}>
+            • At least 8 characters
+          </p>
+          <p className={passwordChecks.uppercase ? "valid" : "invalid"}>
+            • At least one uppercase letter
+          </p>
+          <p className={passwordChecks.lowercase ? "valid" : "invalid"}>
+            • At least one lowercase letter
+          </p>
+          <p className={passwordChecks.special ? "valid" : "invalid"}>
+            • At least one special character (!@#$ etc.)
+          </p>
+        </div>
+
+        {/* Strength Bar */}
+        <div className="strength-bar">
+          <div
+            className="strength-fill"
+            style={{ width: `${strengthPercent}%` }}
+          ></div>
+        </div>
 
         <label>Confirm Password</label>
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm password"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-        />
+        <div className="password-wrapper">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            name="confirmPassword"
+            placeholder="Confirm password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
+          <span
+            className="toggle-password"
+            onClick={() => setShowConfirmPassword((prev) => !prev)}
+          >
+            {showConfirmPassword ?  <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+
 
         <button type="submit" className="login-button">
           Sign Up
