@@ -1,17 +1,16 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
-// IMPORT: Ensure this path matches where your models are exported
 const { CalendarEvent } = require("../db"); 
 
-// 1. GET Events
+// GET Events
 router.get('/events', async (req, res) => {
     try {
       const { user } = req.query; 
   
       let query = {};
       if (user) {
-        // Filter: Show events belonging to user OR family events
+        // Filter: Show e
         query = { 
             $or: [
                 { user: user }, 
@@ -42,14 +41,13 @@ router.post('/events', async (req, res) => {
     }
 });
 
-// 3. PUT (Update) Event - WAS MISSING
+//updatte
 router.put('/events/:id', async (req, res) => {
     try {
       const { id } = req.params;
       let updateData = req.body;
 
-      // FullCalendar sends nested 'extendedProps' on edit. 
-      // We must flatten them so Mongoose saves them correctly.
+      
       if (updateData.extendedProps) {
         updateData = {
             ...updateData,
@@ -61,7 +59,7 @@ router.put('/events/:id', async (req, res) => {
       const updatedEvent = await CalendarEvent.findByIdAndUpdate(
         id, 
         updateData, 
-        { new: true } // Return the updated doc
+        { new: true } 
       );
 
       res.json(updatedEvent);
@@ -71,7 +69,7 @@ router.put('/events/:id', async (req, res) => {
     }
 });
 
-// 4. DELETE Event - WAS MISSING
+// 4. DELETE Event
 router.delete('/events/:id', async (req, res) => {
     try {
         const { id } = req.params;

@@ -64,5 +64,16 @@
       "user": "Jibril Wague",
       "isFamily": false
     }
+  },
+  {
+    "id": "f5f3ac56-be78-4d7b-bcb0-c2790d44d295",
+    "title": "test02Sun",
+    "start": "2025-11-28T09:00:00",
+    "allDay": false,
+    "extendedProps": {
+      "location": "BroomeSt",
+      "user": "Jibril Wague",
+      "isFamily": false
+    }
   }
 ]
