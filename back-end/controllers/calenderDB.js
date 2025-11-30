@@ -1,106 +1,84 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const { User, CalendarEvent, Family } = require("../db")
-const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });require('dotenv').config();
+const express = require('express');
+const router = express.Router();
+const { CalendarEvent } = require("../db"); 
 
-
-const connectToDb = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('✅ Connected to Database');
-  } catch (error) {
-    console.error('❌ Connection failed', error);
-  }
-};
-
-// Call the function
-const createUser = async (userData) => {
+// GET Events
+router.get('/events', async (req, res) => {
     try {
-      const { firstName, lastName,email, password } = userData;
+      const { user } = req.query; 
   
-      // Check if user exists
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        throw new Error('User already exists with this email.');
+      let query = {};
+      if (user) {
+        // Filter: Show e
+        query = { 
+            $or: [
+                { user: user }, 
+                { isFamily: true }
+            ] 
+        };
       }
   
-      // Hash the password before saving
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-  
-      const newUser = new User({
-        firstName,
-        lastName,
-        email,
-        password: hashedPassword
-      });
-  
-      const savedUser = await newUser.save();
-      
-      const { password: _, ...userWithoutPassword } = savedUser.toObject();
-      return userWithoutPassword;
-  
+      // FIX: Changed 'Event' to 'CalendarEvent'
+      const events = await CalendarEvent.find(query);
+      res.json(events);
     } catch (error) {
-      console.error("Error creating user:", error.message);
-      throw error;
+      console.error("GET Error:", error);
+      res.status(500).json({ message: error.message });
     }
-  };
+});
 
-
-const runTest = async () => {
-    // Connect first!
-    await connectToDb();
-
+// 2. POST (Create) Event
+router.post('/events', async (req, res) => {
     try {
-        console.log("Creating user...");
-        
-        const dad = await createUser({
-            firstName: "John Doe", 
-            lastName: "DOe",
-            email: "john@example.com",
-            password: "securePassword123"
-        });
-
-        console.log("🎉 Success!");
-        console.log("User created:", dad.firstName, dad.email);
-        
-    } catch (e) {
-        console.log("⚠️ Test Failed:", e.message);
-    } finally {
-        mongoose.connection.close();
+      // FIX: Changed 'Event' to 'CalendarEvent'
+      const newEvent = new CalendarEvent(req.body);
+      const savedEvent = await newEvent.save();
+      res.status(201).json(savedEvent);
+    } catch (error) {
+      console.error("POST Error:", error);
+      res.status(400).json({ message: error.message });
     }
-};
-runTest();
+});
 
-//code for later 
-/*
-const registerUser= async (req,res)=>{
-    const{
-        firstName,
-        lastName,
-        email,
-        password
-    }= req.body
-}
-    */
-/*
-const userExists = await User.findOne({ email }).populate('profile');
-  if (userExists) {
-    return res.status(409).json({ message: 'Email already in use.' });
-  }
-  if (!email || !password || !lastName || !firstNameame) {
-    return res.status(400).json({ message: 'Please fill in all required fields.' });
-  }
-  const session = await mongoose.startSession();
+//updatte
+router.put('/events/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      let updateData = req.body;
 
-  try{
-    session.startTransaction();
-    
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
-    const newUser = new User({
-        
-    })
-  }catch(e){}
-  */
+      
+      if (updateData.extendedProps) {
+        updateData = {
+            ...updateData,
+            ...updateData.extendedProps
+        };
+        delete updateData.extendedProps;
+      }
+
+      const updatedEvent = await CalendarEvent.findByIdAndUpdate(
+        id, 
+        updateData, 
+        { new: true } 
+      );
+
+      res.json(updatedEvent);
+    } catch (error) {
+      console.error("PUT Error:", error);
+      res.status(400).json({ message: error.message });
+    }
+});
+
+// 4. DELETE Event
+router.delete('/events/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await CalendarEvent.findByIdAndDelete(id);
+        res.json({ message: "Event deleted" });
+    } catch (error) {
+        console.error("DELETE Error:", error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+module.exports = router;

@@ -10,5 +10,11 @@
     "email": "aca9900@nyu.edu",
     "passwordHash": "$2b$10$2l73qmwpm9bubzi5M0qOaOTfnqTPNZXN.gwI/YhuGcVTtRAIL8bDa",
     "name": "Zach August"
+  },
+  {
+    "id": "1764362040814",
+    "email": "jw7677@nyu.edu",
+    "passwordHash": "$2b$10$QS64FnYw4sHy4M0FwIrt2.FU43JA3lXBeMK1NN9DF/bAclSQRH2p.",
+    "name": "Jibril Wague"
   }
 ]
