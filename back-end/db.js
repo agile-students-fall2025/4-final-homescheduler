@@ -35,52 +35,50 @@ const userSchema = new Schema({
 });
 
 // 2. CALENDAR EVENT SCHEMA
-const calendarEventSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  startDateTime: {
-    type: Date,
-    required: true,
-    index: true 
-  },
-  endDateTime: {
-    type: Date,
-    required: true,
-    // Validate that End is after Start
-    validate: {
-      validator: function(value) {
-        // 'this' refers to the document being saved
-        return this.startDateTime <= value;
-      },
-      message: 'End time must be after start time.'
+const EventSchema = new mongoose.Schema({
+    title: {
+      type: String,
+      required: true,
+    },
+    // Matches React's "start"
+    start: {
+      type: Date,
+      required: true, 
+    },
+    // Matches React's "end" (Optional, as your "Add" modal doesn't send it)
+    end: {
+      type: Date, 
+    },
+    allDay: {
+      type: Boolean,
+      default: false,
+    },
+    // Matches React's "location" (was description)
+    location: {
+      type: String,
+      default: ''
+    },
+    // Matches React's "user" (Store the name string directly)
+    user: {
+      type: String, 
+      required: true
+    },
+    // Matches React's filter
+    isFamily: {
+      type: Boolean,
+      default: true
     }
-  },
-  description: {
-    type: String,
-    trim: true
-  },
-  participants: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User', 
-    required: true
-  }],
-  createdBy: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  }
-}, {
-  timestamps: true
-});
-
-// FIXED: Use .some() and .equals() for reliable ObjectId comparison
-calendarEventSchema.methods.hasAccess = function(userId) {
-  if (!userId) return false;
-  return this.participants.some(participantId => participantId.equals(userId));
-};
+  });
+  
+  // Helper: Rename _id to id for the frontend
+  EventSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+      ret.id = ret._id;
+      delete ret._id;
+    }
+  });
 
 // 3. FAMILY SCHEMA
 const familySchema = new Schema({
@@ -111,15 +109,16 @@ const familySchema = new Schema({
     timestamps: true
   });
 
-// Create Models
-const User = model('User', userSchema);
-const CalendarEvent = model('CalendarEvent', calendarEventSchema);
-const Family = model('Family', familySchema);
+  const User = model('User', userSchema);
 
-
-
-module.exports = {
-    User,
-    CalendarEvent,
-    Family
-};
+  // CHANGED: Variable name from 'Events' to 'CalendarEvent'
+  // CHANGED: Model name from 'Events' to 'CalendarEvent'
+  const CalendarEvent = model('CalendarEvent', EventSchema); 
+  
+  const Family = model('Family', familySchema);
+  
+  module.exports = {
+      User,
+      CalendarEvent, // <--- Now this matches your controller import!
+      Family
+  };
