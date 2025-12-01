@@ -1,96 +1,87 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { User } = require('../db');   
 const auth = require('../authentication');
 
 const router = express.Router();
 
-const usersPath = path.join(process.cwd(), 'data', 'users.json');
-
-const readUsers = () => {
-  if (!fs.existsSync(usersPath)) return [];
-  return JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
-};
-
-const writeUsers = (data) => {
-  fs.writeFileSync(usersPath, JSON.stringify(data, null, 2));
-};
-
+// SIGNUP
 router.post('/signup', async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  try {
+    const { firstName, lastName, email, password } = req.body;
 
-  if (!firstName || !lastName || !email || !password) {
-    return res.status(400).json({ message: "Please fill in all fields." });
+    if (!firstName || !lastName || !email || !password) {
+      return res.status(400).json({ message: "Please fill in all fields." });
+    }
+
+    const existing = await User.findOne({ email });
+    if (existing) {
+      return res.status(409).json({ message: "Email already registered." });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      password: passwordHash
+    });
+
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+
+    res.status(201).json({
+      message: "Account created successfully!",
+      user: {
+        id: newUser._id,
+        email: newUser.email,
+        name: `${newUser.firstName} ${newUser.lastName}`,
+        token,
+      },
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error during signup." });
   }
-
-  const users = readUsers();
-
-  if (users.find((u) => u.email === email)) {
-    return res.status(409).json({ message: "Email already registered." });
-  }
-
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  const newUser = {
-    id: Date.now().toString(),
-    email,
-    passwordHash,
-    name: `${firstName} ${lastName}`,
-  };
-
-  users.push(newUser);
-  writeUsers(users);
-
-  const token = jwt.sign({ id: newUser.id }, "dev_secret_key");
-
-  res.status(201).json({
-    message: "Account created successfully!",
-    user: {
-      id: newUser.id,
-      email: newUser.email,
-      name: newUser.name,
-      token,
-    },
-  });
-
 });
 
+// LOGIN
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const users = readUsers();
-  const user = users.find((u) => u.email === email);
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: "Email not found." });
 
-  if (!user) {
-    return res.status(404).json({ message: "Email not found." });
-  }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch)
+      return res.status(400).json({ message: "Incorrect password." });
 
-  const passwordMatches = await bcrypt.compare(password, user.passwordHash);
-  if (!passwordMatches) {
-    return res.status(400).json({ message: "Incorrect password." });
-  }
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
-  const token = jwt.sign({ id: user.id }, "dev_secret_key");
-
-  res.status(200).json({
-    message: "Logged in!",
-    user: {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      token,
-    },
-  });
-
-  router.get('/me', auth, (req, res) => {
-    res.json({
-      message: "Protected route accessed!",
-      user: req.user
+    res.status(200).json({
+      message: "Logged in!",
+      user: {
+        id: user._id,
+        email: user.email,
+        name: `${user.firstName} ${user.lastName}`,
+        token,
+      },
     });
+
+  } catch (err) {
+    res.status(500).json({ message: "Server error during login." });
+  }
+});
+
+router.get('/me', auth, (req, res) => {
+  res.json({
+    message: "Protected route accessed!",
+    user: req.user
   });
-  
 });
 
 module.exports = router;
