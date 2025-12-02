@@ -23,9 +23,9 @@ const connectToDb = async () => {
   try {
     // Make sure process.env.MONGO_URI is defined in your .env file
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('✅ Connected to MongoDB');
+    console.log('Connected to MongoDB');
   } catch (error) {
-    console.error('❌ MongoDB Connection failed:', error);
+    console.error('MongoDB Connection failed:', error);
     process.exit(1); // Stop the app if DB fails
   }
 };
@@ -42,7 +42,7 @@ app.use('/api/family', familyRoutes);
 app.use('/api/calendar', CalRoutes); 
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 module.exports = app;
