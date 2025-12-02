@@ -49,7 +49,6 @@ router.post('/signup', async (req, res) => {
 
 // LOGIN
 router.post('/login', async (req, res) => {
-  try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
@@ -71,10 +70,6 @@ router.post('/login', async (req, res) => {
         token,
       },
     });
-
-  } catch (err) {
-    res.status(500).json({ message: "Server error during login." });
-  }
 });
 
 router.get('/me', auth, (req, res) => {
