@@ -90,6 +90,7 @@ export function FamilySchedule() {
         location: formData.location,
         user: CURRENT_USER, // Add the current user
         isFamily: true,
+        //familyId: familyId || null,
       };
 
       try {
