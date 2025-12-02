@@ -163,5 +163,6 @@ const familySchema = new Schema({
   module.exports = {
       User,
       CalendarEvent, // <--- Now this matches your controller import!
-      Family
+      Family,
+      Reminder
   };
