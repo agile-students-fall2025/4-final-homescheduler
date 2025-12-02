@@ -75,27 +75,5 @@
       "user": "Jibril Wague",
       "isFamily": false
     }
-  },
-  {
-    "id": "3960ba01-9111-4310-9025-2af9d7d19955",
-    "title": "hi",
-    "start": "2025-12-30T09:00:00",
-    "allDay": false,
-    "extendedProps": {
-      "location": "",
-      "user": "Catherine Gomes",
-      "isFamily": false
-    }
-  },
-  {
-    "id": "3fba1832-1949-4bd6-b223-33dd65ebd179",
-    "title": "game",
-    "start": "2025-12-10T09:00:00",
-    "allDay": false,
-    "extendedProps": {
-      "location": "",
-      "user": "Catherine Gomes",
-      "isFamily": true
-    }
   }
 ]
