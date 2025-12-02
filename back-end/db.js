@@ -109,6 +109,49 @@ const familySchema = new Schema({
     timestamps: true
   });
 
+  // 4. REMINDER SCHEMA
+  const reminderSchema = new Schema({
+    title: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    dueAt: {
+      type: Date,
+      default: null
+    },
+    notes: {
+      type: String,
+      default: ""
+    },
+    repeat: {
+      type: [String],
+      default: []
+    },
+    notify: {
+      type: String,
+      default: "off"
+    },
+    done: {
+      type: Boolean,
+      default: false
+    }
+  }, {
+    timestamps: true
+  });
+
+  // Ensures the frontend receives `id` instead of `_id`
+  reminderSchema.set("toJSON", {
+    virtuals: true,
+    versionKey: false,
+    transform: (_, ret) => {
+      ret.id = ret._id;
+      delete ret._id;
+    }
+  });
+  const Reminder = model("Reminder", reminderSchema);
+
+
   const User = model('User', userSchema);
 
   // CHANGED: Variable name from 'Events' to 'CalendarEvent'
@@ -120,5 +163,6 @@ const familySchema = new Schema({
   module.exports = {
       User,
       CalendarEvent, // <--- Now this matches your controller import!
-      Family
+      Family,
+      Reminder
   };
