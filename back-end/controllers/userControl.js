@@ -49,7 +49,7 @@ router.post('/signup', async (req, res) => {
 
 // LOGIN
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, remember } = req.body;
 
     const user = await User.findOne({ email });
     if (!user)
@@ -59,7 +59,13 @@ router.post('/login', async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Incorrect password." });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const expiresIn = remember ? "30d" : "2h";
+
+      const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn }
+    );
 
     res.status(200).json({
       message: "Logged in!",
