@@ -92,3 +92,28 @@
   background-color: #0a4416;
   transform: translateY(-2px);
 }
+
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: -5px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #0a2c0a;
+  user-select: none;
+}
+
+.remember-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #07340f; 
+  border-radius: 4px;
+}
+
+.remember-row label {
+  cursor: pointer;
+  font-weight: 500;
+  color: #0a2c0a;
+}
