@@ -15,18 +15,44 @@ const writeEvents = (data) => {
 };
 
 exports.getEvents =  async (req, res) => {
-    const events = readEvents();
-    res.json(events);
-  };
+  const { isFamily, familyId } = req.query;
+  let events = readEvents();
+//if family calendar
+  if (isFamily == "true"){
+    events = events.filter(
+      event =>
+        (event.extendedProps?.isFamily === true));
+    }
+// if personal calendar
+  else if (isFamily == "false") {
+    events = events.filter(
+      event =>
+        (event.extendedProps?.isFamily === false));
+    }
+  if (familyId){
+    events = events.filter(
+      event =>
+        (event.extendedProps?.familyId === familyId));
+  }
+
+  res.json(events);
+};
+
   
 //post
   exports.createEvent = async (req, res) => {
-    const { title, start, location, user, isFamily } = req.body;
+    const { title, start, location, user, isFamily, familyId } = req.body;
   
     if (!title || !start || !user) {
       return res
         .status(400)
         .json({ error: 'Missing required fields: title, start, user' });
+    }
+    if (isFamily && !familyId) {
+      return res
+        .status(400)
+        .json({ error: 'Missing required fields: family ID' });
+
     }
 
     const allEvents = readEvents();
@@ -41,6 +67,8 @@ exports.getEvents =  async (req, res) => {
         location: location || '',
         user: user, 
         isFamily: !!isFamily,
+        // need to create familyId
+        familyId: familyId || null,
       },
     };
 

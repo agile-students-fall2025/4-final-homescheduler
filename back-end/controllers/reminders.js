@@ -2,29 +2,7 @@
 const express = require("express");
 const router = express.Router();
 
-// In-memory mock data
-let reminders = [
-  { id: "1",
-    title: "Buy milk",
-    dueAt: "2025-11-10T09:00:00Z",
-    notes: "",
-    repeat: [],
-    notify: "off",
-    done: false,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-    },
-    { id: "2",
-    title: "Study ECE exam",
-    dueAt: "2025-11-12T18:00:00Z",
-    notes: "Chapters 3-5",
-    repeat: ["Daily"],
-    notify: "30m",
-    done: false,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-    }
-];
+const { Reminder } = require("../db");
 
 function zeroPad(n){
   return String(n).padStart(2, "0");
@@ -54,8 +32,13 @@ function buildDueAtFromForm({ month, day, year, time}){
 }
 
 // GET /api/reminders  -> list all reminders
-router.get("/", (req, res) => {
-  res.json(reminders);
+router.get("/", async (req, res) => {
+  try{
+    const items = await Reminder.find().sort({ createdAt: -1 });
+    res.json(items);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to load reminders"})
+  }
 });
 
 router.get("/:id", (req, res) => {
@@ -67,37 +50,17 @@ router.get("/:id", (req, res) => {
 
 // POST /api/reminders -> create a reminder
 // POST /api/reminders -> create from form-shaped body
-router.post("/", (req, res) => {
-  const { title, month, day, year, time, notes, repeat, notify, dueAt } = req.body || {};
-  if (!title) return res.status(400).json({ error: "title is required" });
-
-  // If form fields provided, build dueAt from them; else allow a raw dueAt string or default to now
-  let finalDueAt = dueAt || null;
-  if (month || day || year || time) {
-    const built = buildDueAtFromForm({ month, day, year, time });
-    if (!built.ok) return res.status(400).json({ error: built.error });
-    finalDueAt = built.iso;
+router.post("/", async (req, res) => {
+  try {
+    const reminder = await Reminder.create(req.body);
+    res.status(201).json(reminder);
+  } catch (err) {
+    res.status(400).json({ error: "Failed to create reminder" });
   }
-  if (!finalDueAt) finalDueAt = new Date().toISOString();
-
-  const nextId = (Math.max(0, ...reminders.map(r => Number(r.id))) + 1).toString();
-  const now = new Date().toISOString();
-
-  const newItem = {
-    id: nextId,
-    title: String(title),
-    dueAt: finalDueAt,
-    notes: notes ?? "",
-    repeat: Array.isArray(repeat) ? repeat : [],
-    notify: notify ?? "off",
-    done: typeof done === "boolean" ? done : false,
-    createdAt: now,
-    updatedAt: now
-  };
-
-  reminders.push(newItem);
-  res.status(201).json(newItem);
 });
+
+
+
 // PUT /api/reminders/:id -> update a reminder
 router.put("/:id", (req, res) => {
   const { id } = req.params;
@@ -139,45 +102,29 @@ router.put("/:id", (req, res) => {
   res.json(updated);
 });
 
-router.patch("/:id", (req, res) => {
-  const { id } = req.params;
-  const { done } = req.body || {};
-
-  const idx = reminders.findIndex(r => r.id === id);
-  if (idx === -1) {
-    return res.status(404).json({ error: "Reminder not found" });
+router.patch("/:id", async (req, res) => {
+  try {
+    const updated = await Reminder.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!updated) return res.status(404).json({ error: "Reminder not found" });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update reminder" });
   }
-
-  const current = reminders[idx];
-
-  // Toggle or set done field
-  const updated = {
-    ...current,
-    done: typeof done === "boolean" ? done : current.done,
-    updatedAt: new Date().toISOString()
-  };
-
-  reminders[idx] = updated;
-
-  res.json(updated);
 });
 
 // DELETE /api/reminders/:id -> remove a reminder
-router.delete("/:id", (req, res) => {
-  const { id } = req.params;
-
-  // Find the index of the reminder
-  const idx = reminders.findIndex(r => r.id === id);
-  if (idx === -1) {
-    return res.status(404).json({ error: "Reminder not found" });
+router.delete("/:id", async (req, res) => {
+  try {
+    await Reminder.findByIdAndDelete(req.params.id);
+    res.json({ message: "Deleted" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete" });
   }
-
-  // Remove it from the array and return the deleted object
-  const removed = reminders.splice(idx, 1)[0];
-  res.json({
-    message: "Reminder deleted successfully",
-    deleted: removed
-  });
 });
+
 
 module.exports = router; // <-- export the router
