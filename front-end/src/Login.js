@@ -8,6 +8,7 @@ export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);  
 
   const navigate = useNavigate(); 
 
@@ -18,7 +19,7 @@ export function Login() {
       const res = await fetch("http://localhost:3001/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, remember }), 
       });
 
       const data = await res.json();
@@ -29,7 +30,12 @@ export function Login() {
       }
 
       localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("token", data.user.token);
+
+      if (remember) {
+        localStorage.setItem("token", data.user.token); 
+      } else {
+        sessionStorage.setItem("token", data.user.token); 
+      }
 
       navigate("/home");
     } 
@@ -68,6 +74,16 @@ export function Login() {
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
+        </div>
+
+        <div className="remember-row">
+          <input
+            type="checkbox"
+            id="remember"
+            checked={remember}
+            onChange={() => setRemember(!remember)}
+          />
+          <label htmlFor="remember">Remember this device</label>
         </div>
 
         <button type="submit" className="login-button">
