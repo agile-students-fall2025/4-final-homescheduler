@@ -99,5 +99,29 @@
       "isFamily": false,
       "familyId": null
     }
+  },
+  {
+    "id": "a1745428-996a-4f11-a773-d885796bdff7",
+    "title": "finals",
+    "start": "2025-12-10T00:00:00",
+    "allDay": false,
+    "extendedProps": {
+      "location": "cantor",
+      "user": "tester1 test1",
+      "isFamily": false,
+      "familyId": null
+    }
+  },
+  {
+    "id": "06e99593-7819-456a-bbc6-f94a36eb1d81",
+    "title": "freedom",
+    "start": "2025-12-12T09:00:00",
+    "allDay": false,
+    "extendedProps": {
+      "location": "class",
+      "user": "tester1 test1",
+      "isFamily": false,
+      "familyId": null
+    }
   }
 ]
