@@ -1,58 +1,119 @@
 .home-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
-    font-family: Arial, sans-serif;
-    min-height: 100vh;
-    background-color: #eff6ee;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+  min-height: 100vh;
+  background-color: #f3f8f1;
+  font-family: Arial, sans-serif;
+}
 
-  .app-title {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #051D01;
-  }
-  
-  .welcome-box {
-    background-color: #e4e2dd;
-    width: 80%;
-    max-width: 400px;
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 40px;
-  }
-  
-  .button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 80%;
-    max-width: 400px;
-  }
-  
-  .home-button {
-    width: 100%;
-    padding: 16px;
-    background-color: #063204;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .home-button:hover {
-    background-color: #2B5528;
-  }
-  .app-logo {
-    width: 180px;
-    height: 180px;
-    object-fit: contain;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    
-  }
-  
+.app-logo {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  border-radius: 16px;
+}
+
+.app-title {
+  font-size: 28px;
+  color: #0a2c0a;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.welcome-box {
+  background-color: #eae7e5;
+  padding: 20px 25px;
+  width: 85%;
+  max-width: 380px;
+  border-radius: 14px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.date-time-widget {
+  background-color: #ffffff;
+  padding: 18px 20px;
+  width: 70%;
+  max-width: 260px;
+  border-radius: 16px;
+  text-align: center;
+  margin-bottom: 35px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+  border: 1px solid #ededed;
+}
+
+.dt-weekday {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0a2c0a;
+  margin-bottom: 2px;
+}
+
+.dt-date {
+  font-size: 15px;
+  color: #444;
+  margin-bottom: 2px;
+}
+
+.dt-time {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0a2c0a;
+}
+
+.button-group {
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.home-button {
+  background-color: #07340f;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.home-button:hover {
+  background-color: #0a4416;
+  transform: translateY(-2px);
+}
+
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: -5px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #0a2c0a;
+  user-select: none;
+}
+
+.remember-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #07340f; 
+  border-radius: 4px;
+}
+
+.remember-row label {
+  cursor: pointer;
+  font-weight: 500;
+  color: #0a2c0a;
+}

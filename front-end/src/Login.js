@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from './logo.png';
 import './Login.css'; 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);  
+
   const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
@@ -15,7 +19,7 @@ export function Login() {
       const res = await fetch("http://localhost:3001/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, remember }), 
       });
 
       const data = await res.json();
@@ -26,7 +30,12 @@ export function Login() {
       }
 
       localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("token", data.user.token);
+
+      if (remember) {
+        localStorage.setItem("token", data.user.token); 
+      } else {
+        sessionStorage.setItem("token", data.user.token); 
+      }
 
       navigate("/home");
     } 
@@ -51,12 +60,31 @@ export function Login() {
         />
 
         <label>Password</label>
-        <input
-          type="password"
-          placeholder="Enter password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="password-wrapper">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <span
+            className="toggle-password"
+            onClick={() => setShowPassword(prev => !prev)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+
+        <div className="remember-row">
+          <input
+            type="checkbox"
+            id="remember"
+            checked={remember}
+            onChange={() => setRemember(!remember)}
+          />
+          <label htmlFor="remember">Remember this device</label>
+        </div>
 
         <button type="submit" className="login-button">
           Login

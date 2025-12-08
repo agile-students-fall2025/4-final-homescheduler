@@ -50,11 +50,7 @@
     transition: 0.3s;
     
   }
-  .my-cal:hover {
-    background-color: #cadcbc;
-    cursor: pointer;
  
-  }
   .fam-cal {
     
     background-color: #d1e4c7;
@@ -66,10 +62,7 @@
     padding: 6px 10px;
     transition: 0.3s;
   }
-  .fam-cal:hover {
-    background-color: rgb(229, 245, 217);
-    cursor: pointer;
-  }
+
   .com-cal {
     background-color: #9bb093;
     border: none !important;
@@ -84,3 +77,4 @@
     background-color: #c2d2bc;
     cursor: pointer;
   }
+

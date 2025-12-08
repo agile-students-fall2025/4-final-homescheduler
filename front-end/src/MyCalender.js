@@ -19,6 +19,7 @@ export function MyCalendar() {
   const [reminders, setReminders] = useState([]);
   const [loadingRem, setLoadingRem] = useState(false);
   const [errRem, setErrRem] = useState("");
+  const [expandedReminderId, setExpandedReminderId] = useState(null);
 
   const userData = JSON.parse(localStorage.getItem("user"));
   const CURRENT_USER = userData?.name;
@@ -73,22 +74,27 @@ export function MyCalendar() {
 
   const dueSoon = (r) => msUntil(r.dueAt) <= 1000 * 60 * 60 && msUntil(r.dueAt) > 0; // within 1h
 
-  const toggleDone = async (r) => {
+  const toggleExpandedReminder = (id) => {
+  setExpandedReminderId((prev) => (prev === id ? null : id));
+  };
+
+  const deleteReminder = async (r) => {
     try {
-      const res = await fetch(`http://localhost:3001/api/reminders/${r.id}`, {
-        method: 'PATCH',
+      const res = await fetch(`${API_URL}/reminders/${r.id}`, {
+        method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ done: !r.done })
       });
+
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setReminders((prev) =>
-        prev.map((x) => (x.id === r.id ? { ...x, done: !r.done } : x))
-      );
+
+      // Remove from local state
+      setReminders((prev) => prev.filter((x) => x.id !== r.id));
     } catch (e) {
       console.error(e);
-      alert("Failed to update reminder.");
+      alert("Failed to delete reminder.");
     }
   };
+
 
   const fetchEvents = async () => {
     try {
@@ -321,22 +327,54 @@ export function MyCalendar() {
         {!loadingRem && !errRem && sortedReminders.length > 0 && (
           <ul className="reminder-list">
             {sortedReminders.map((r) => (
-              <li key={r.id} className={`reminder-item ${r.done ? 'done' : ''}`}>
-                <div className="reminder-title-row">
+              <li
+                key={r.id}
+                className={`reminder-item ${r.done ? 'done' : ''}`}
+              >
+                {/* Title row is clickable to expand/collapse details */}
+                <div
+                  className="reminder-title-row"
+                  onClick={() => toggleExpandedReminder(r.id)}
+                >
+                  {/* Checkbox: mark complete & delete (no longer a “toggle done” only) */}
                   <input
                     type="checkbox"
-                    checked={!!r.done}
-                    onChange={() => toggleDone(r)}
-                    aria-label="mark reminder done"
+                    onClick={(e) => e.stopPropagation()} // don't trigger expand when clicking box
+                    onChange={() => deleteReminder(r)}
+                    aria-label="complete and delete reminder"
                   />
                   <span className="reminder-title">{r.title}</span>
                   {dueSoon(r) && <span className="reminder-badge">Due soon</span>}
                 </div>
+
+                {/* Always show basic meta */}
                 <div className="reminder-meta">
                   <span className="reminder-due">Due: {fmt(r.dueAt)}</span>
                   {r.notes ? <span className="reminder-notes"> · {r.notes}</span> : null}
                 </div>
+
+                {/* Extra details only when expanded */}
+                {expandedReminderId === r.id && (
+                  <div className="reminder-details">
+                    <p>
+                      <strong>Description:</strong>{" "}
+                      {r.notes || "No description provided."}
+                    </p>
+                    {/* These extra fields exist on the server-side PUT handler, so show them if present */}
+                    <p>
+                      <strong>Repeat:</strong>{" "}
+                      {Array.isArray(r.repeat) && r.repeat.length > 0
+                        ? r.repeat.join(", ")
+                        : "None"}
+                    </p>
+                    <p>
+                      <strong>Notify:</strong>{" "}
+                      {typeof r.notify === "boolean" ? (r.notify ? "Yes" : "No") : "Not set"}
+                    </p>
+                  </div>
+                )}
               </li>
+
             ))}
           </ul>
         )}
