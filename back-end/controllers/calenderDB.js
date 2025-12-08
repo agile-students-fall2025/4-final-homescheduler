@@ -3,23 +3,21 @@ const express = require('express');
 const router = express.Router();
 const { CalendarEvent } = require("../db"); 
 
-// GET Events
-router.get('/events', async (req, res) => {
+// 1. GET Events (Keep existing logic, it looked okay)
+router.get('/', async (req, res) => {
     try {
       const { user } = req.query; 
-  
       let query = {};
+      
       if (user) {
-        // Filter: Show e
         query = { 
             $or: [
-                { user: user }, 
-                { isFamily: true }
+                { 'extendedProps.user': user }, 
+                { 'extendedProps.isFamily': true }
             ] 
         };
       }
-  
-      // FIX: Changed 'Event' to 'CalendarEvent'
+      
       const events = await CalendarEvent.find(query);
       res.json(events);
     } catch (error) {
@@ -28,11 +26,22 @@ router.get('/events', async (req, res) => {
     }
 });
 
-// 2. POST (Create) Event
-router.post('/events', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
-      // FIX: Changed 'Event' to 'CalendarEvent'
-      const newEvent = new CalendarEvent(req.body);
+      const { title, start, end, allDay, extendedProps } = req.body;
+
+      const newEvent = new CalendarEvent({
+        title,
+        start,
+        end,
+        allDay,
+       
+        user: extendedProps?.user, 
+        location: extendedProps?.location,
+        isFamily: extendedProps?.isFamily,
+      
+      });
+
       const savedEvent = await newEvent.save();
       res.status(201).json(savedEvent);
     } catch (error) {
@@ -41,25 +50,29 @@ router.post('/events', async (req, res) => {
     }
 });
 
-//updatte
-router.put('/events/:id', async (req, res) => {
+// PUT (Update)
+router.put('/:id', async (req, res) => {
     try {
       const { id } = req.params;
-      let updateData = req.body;
+      const { title, start, end, allDay, extendedProps } = req.body;
 
-      
-      if (updateData.extendedProps) {
-        updateData = {
-            ...updateData,
-            ...updateData.extendedProps
-        };
-        delete updateData.extendedProps;
+      const updateData = {
+          title,
+          start,
+          end, 
+          allDay
+      };
+
+      if (extendedProps) {
+          if (extendedProps.user) updateData.user = extendedProps.user;
+          if (extendedProps.location) updateData.location = extendedProps.location;
+          if (typeof extendedProps.isFamily !== 'undefined') updateData.isFamily = extendedProps.isFamily;
       }
 
       const updatedEvent = await CalendarEvent.findByIdAndUpdate(
         id, 
         updateData, 
-        { new: true } 
+        { new: true } // Return the updated doc
       );
 
       res.json(updatedEvent);
@@ -70,10 +83,17 @@ router.put('/events/:id', async (req, res) => {
 });
 
 // 4. DELETE Event
-router.delete('/events/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        await CalendarEvent.findByIdAndDelete(id);
+        
+       
+        const result = await CalendarEvent.findOneAndDelete({ id: id });
+        
+        if (!result) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+        
         res.json({ message: "Event deleted" });
     } catch (error) {
         console.error("DELETE Error:", error);

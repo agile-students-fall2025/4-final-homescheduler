@@ -23,5 +23,5 @@ const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-const familyRouter = require('./controllers/familyCalendarDB');
+const familyRouter = require('./controllers/createFamilyControl');
 app.use('/api/families', familyRouter);
