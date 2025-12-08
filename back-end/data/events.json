@@ -75,5 +75,29 @@
       "user": "Jibril Wague",
       "isFamily": false
     }
+  },
+  {
+    "id": "05479e5f-6810-48ba-8028-bf302a00c687",
+    "title": "core-1",
+    "start": "2025-12-12T00:00:00",
+    "allDay": false,
+    "extendedProps": {
+      "location": "zones-1",
+      "user": "Jibril Wague",
+      "isFamily": false,
+      "familyId": null
+    }
+  },
+  {
+    "id": "ef04cfad-4153-4a5d-9e31-b3a929b0f094",
+    "title": "data-01",
+    "start": "2025-12-18T09:00:00",
+    "allDay": false,
+    "extendedProps": {
+      "location": "loc-01",
+      "user": "Jibril Wague",
+      "isFamily": false,
+      "familyId": null
+    }
   }
 ]

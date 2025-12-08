@@ -19,15 +19,14 @@ export function MyCalendar() {
   const [reminders, setReminders] = useState([]);
   const [loadingRem, setLoadingRem] = useState(false);
   const [errRem, setErrRem] = useState("");
-  const [expandedReminderId, setExpandedReminderId] = useState(null);
 
   const userData = JSON.parse(localStorage.getItem("user"));
   const CURRENT_USER = userData?.name;
 
   const [modalState, setModalState] = useState({
     isOpen: false,
-    mode: 'add', 
-    eventData: null, 
+    mode: 'add', // 'add' or 'edit'
+    eventData: null, // Holds data for adding or event object for editing
   });
 
   const myEvents = useMemo(() => {
@@ -45,6 +44,7 @@ export function MyCalendar() {
     try {
       setLoadingRem(true);
       setErrRem("");
+      // Adjust this URL to match your backend route
       const res = await fetch(
         `${API_URL}/reminders?user=${encodeURIComponent(CURRENT_USER)}`, 
       {
@@ -64,7 +64,7 @@ export function MyCalendar() {
 
   
 
-  // helpers
+  // Small helpers
   const fmt = (iso) => new Date(iso).toLocaleString();
   const msUntil = (iso) => new Date(iso).getTime() - Date.now();
 
@@ -74,27 +74,23 @@ export function MyCalendar() {
 
   const dueSoon = (r) => msUntil(r.dueAt) <= 1000 * 60 * 60 && msUntil(r.dueAt) > 0; // within 1h
 
-  const toggleExpandedReminder = (id) => {
-  setExpandedReminderId((prev) => (prev === id ? null : id));
-  };
-
-  const deleteReminder = async (r) => {
+  const toggleDone = async (r) => {
     try {
-      const res = await fetch(`${API_URL}/reminders/${r.id}`, {
-        method: 'DELETE',
+      // Adjust to your backend verb/route
+      const res = await fetch(`http://localhost:3001/api/reminders/${r.id}`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ done: !r.done })
       });
-
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-      // Remove from local state
-      setReminders((prev) => prev.filter((x) => x.id !== r.id));
+      setReminders((prev) =>
+        prev.map((x) => (x.id === r.id ? { ...x, done: !r.done } : x))
+      );
     } catch (e) {
       console.error(e);
-      alert("Failed to delete reminder.");
+      alert("Failed to update reminder.");
     }
   };
-
 
   const fetchEvents = async () => {
     try {
@@ -118,7 +114,7 @@ export function MyCalendar() {
 
   useEffect(() => {
     fetchReminders();
-
+    // Optional: auto-refresh every 60s so new backend reminders pop in
     const t = setInterval(fetchReminders, 60000);
     return () => clearInterval(t);
   }, [fetchReminders]);
@@ -150,7 +146,7 @@ export function MyCalendar() {
 
   // --- C.R.U.D. Operations ---
 
-  //  Save new event or update existing one
+  // [CREATE / UPDATE] Save new event or update existing one
   const handleSave = async (formData) => {
     // formData is { title, location, time }
     if (modalState.mode === 'add') {
@@ -165,7 +161,7 @@ export function MyCalendar() {
         title: formData.title,
         start: startDateTime,
         location: formData.location,
-        user: CURRENT_USER, 
+        user: CURRENT_USER, // Add the current user
         isFamily: false,
       };
 
@@ -199,6 +195,8 @@ export function MyCalendar() {
           ...originalEvent.extendedProps,
           location: formData.location,
           isFamily: false
+          // We don't update the 'user' here, as we're just editing.
+          // You could add an 'lastEditedBy' field if you wanted.
         },
       };
 
@@ -298,8 +296,10 @@ export function MyCalendar() {
 
         </div>
       <FullCalendar
+        // UPDATED: ADDED timeGridPlugin
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} 
         
+        // ADDED: CONFIGURATION FOR MONTH/WEEK/DAY BUTTONS
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
@@ -327,54 +327,22 @@ export function MyCalendar() {
         {!loadingRem && !errRem && sortedReminders.length > 0 && (
           <ul className="reminder-list">
             {sortedReminders.map((r) => (
-              <li
-                key={r.id}
-                className={`reminder-item ${r.done ? 'done' : ''}`}
-              >
-                {/* Title row is clickable to expand/collapse details */}
-                <div
-                  className="reminder-title-row"
-                  onClick={() => toggleExpandedReminder(r.id)}
-                >
-                  {/* Checkbox: mark complete & delete (no longer a “toggle done” only) */}
+              <li key={r.id} className={`reminder-item ${r.done ? 'done' : ''}`}>
+                <div className="reminder-title-row">
                   <input
                     type="checkbox"
-                    onClick={(e) => e.stopPropagation()} // don't trigger expand when clicking box
-                    onChange={() => deleteReminder(r)}
-                    aria-label="complete and delete reminder"
+                    checked={!!r.done}
+                    onChange={() => toggleDone(r)}
+                    aria-label="mark reminder done"
                   />
                   <span className="reminder-title">{r.title}</span>
                   {dueSoon(r) && <span className="reminder-badge">Due soon</span>}
                 </div>
-
-                {/* Always show basic meta */}
                 <div className="reminder-meta">
                   <span className="reminder-due">Due: {fmt(r.dueAt)}</span>
                   {r.notes ? <span className="reminder-notes"> · {r.notes}</span> : null}
                 </div>
-
-                {/* Extra details only when expanded */}
-                {expandedReminderId === r.id && (
-                  <div className="reminder-details">
-                    <p>
-                      <strong>Description:</strong>{" "}
-                      {r.notes || "No description provided."}
-                    </p>
-                    {/* These extra fields exist on the server-side PUT handler, so show them if present */}
-                    <p>
-                      <strong>Repeat:</strong>{" "}
-                      {Array.isArray(r.repeat) && r.repeat.length > 0
-                        ? r.repeat.join(", ")
-                        : "None"}
-                    </p>
-                    <p>
-                      <strong>Notify:</strong>{" "}
-                      {typeof r.notify === "boolean" ? (r.notify ? "Yes" : "No") : "Not set"}
-                    </p>
-                  </div>
-                )}
               </li>
-
             ))}
           </ul>
         )}
