@@ -33,7 +33,9 @@ connectToDb();
 
 // --- Routes ---
 app.use('/api/users', userRoutes);
-app.use('/api/events', eventRoutes); 
+//app.use('/api/events', eventRoutes); 
+app.use('/api/events', CalRoutes); 
+
 app.use('/api/reminders', reminderRoutes);
 app.use('/api/family', familyRoutes);
 
