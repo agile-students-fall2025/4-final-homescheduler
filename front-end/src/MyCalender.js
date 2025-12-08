@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid'; // ADDED: For Week/Day view
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventModal } from './EventMod';
 import './MyCalender.css';
@@ -12,14 +12,10 @@ const API_URL = 'http://localhost:3001/api';
 
 console.log("--- MySchedule component file was loaded ---");
 
-// Replaced all instances of CURRENT_USER = "Me"
-// Locally accesses user data to create event & filter events
-
 export function MyCalendar() {
   console.log("--- MySchedule component IS RENDERING ---")
 
   const [events, setEvents] = useState([]);
-  // Reminders state
   const [reminders, setReminders] = useState([]);
   const [loadingRem, setLoadingRem] = useState(false);
   const [errRem, setErrRem] = useState("");
@@ -29,8 +25,8 @@ export function MyCalendar() {
 
   const [modalState, setModalState] = useState({
     isOpen: false,
-    mode: 'add', // 'add' or 'edit'
-    eventData: null, // Holds data for adding or event object for editing
+    mode: 'add', 
+    eventData: null, 
   });
 
   const myEvents = useMemo(() => {
@@ -48,7 +44,6 @@ export function MyCalendar() {
     try {
       setLoadingRem(true);
       setErrRem("");
-      // Adjust this URL to match your backend route
       const res = await fetch(
         `${API_URL}/reminders?user=${encodeURIComponent(CURRENT_USER)}`, 
       {
@@ -68,7 +63,7 @@ export function MyCalendar() {
 
   
 
-  // Small helpers
+  // helpers
   const fmt = (iso) => new Date(iso).toLocaleString();
   const msUntil = (iso) => new Date(iso).getTime() - Date.now();
 
@@ -80,7 +75,6 @@ export function MyCalendar() {
 
   const toggleDone = async (r) => {
     try {
-      // Adjust to your backend verb/route
       const res = await fetch(`http://localhost:3001/api/reminders/${r.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -118,7 +112,7 @@ export function MyCalendar() {
 
   useEffect(() => {
     fetchReminders();
-    // Optional: auto-refresh every 60s so new backend reminders pop in
+
     const t = setInterval(fetchReminders, 60000);
     return () => clearInterval(t);
   }, [fetchReminders]);
@@ -150,7 +144,7 @@ export function MyCalendar() {
 
   // --- C.R.U.D. Operations ---
 
-  // [CREATE / UPDATE] Save new event or update existing one
+  //  Save new event or update existing one
   const handleSave = async (formData) => {
     // formData is { title, location, time }
     if (modalState.mode === 'add') {
@@ -165,7 +159,7 @@ export function MyCalendar() {
         title: formData.title,
         start: startDateTime,
         location: formData.location,
-        user: CURRENT_USER, // Add the current user
+        user: CURRENT_USER, 
         isFamily: false,
       };
 
@@ -199,8 +193,6 @@ export function MyCalendar() {
           ...originalEvent.extendedProps,
           location: formData.location,
           isFamily: false
-          // We don't update the 'user' here, as we're just editing.
-          // You could add an 'lastEditedBy' field if you wanted.
         },
       };
 
@@ -300,14 +292,20 @@ export function MyCalendar() {
 
         </div>
       <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} 
+        
+        headerToolbar={{
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay' 
+        }}
         initialView="dayGridMonth"
-        events={myEvents} // Events now come from state, which is fed by the API
+        events={myEvents} 
         selectable={true}
-        editable={true} // Enables drag-and-drop
+        editable={true} 
         select={handleSelect}
         eventClick={handleEventClick}
-        eventChange={handleEventChange} // Called on drag/drop
+        eventChange={handleEventChange} 
       />
 
       <div className="reminder-section">
