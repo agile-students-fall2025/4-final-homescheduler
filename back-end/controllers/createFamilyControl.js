@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
       return res.status(201).json(savedFamily);
 
     } catch (e) {
-        console.error("Error creating family:", error.message);
+        console.error("Error creating family:", e.message);
         return res.status(500).json({message: 'Cannot create family.' });
       
       }
