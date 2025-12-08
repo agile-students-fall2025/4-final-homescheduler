@@ -5,6 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'; // ADDED: For Week/Day view
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventModal } from './EventMod';
 import './MyCalender.css';
+
 import { NavMenu } from "./NavMenu";
 import { Link } from "react-router-dom";
 
