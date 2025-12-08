@@ -84,3 +84,19 @@
     background-color: #c2d2bc;
     cursor: pointer;
   }
+
+  .member-filter {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 0px;
+  }
+  
+  .member-filter select {
+    padding: 7px;
+    border-radius: 6px;
+    border: 1px solid #aabba8;
+    font-size: 15px;
+    background-color: #d1e4c7;
+  }
