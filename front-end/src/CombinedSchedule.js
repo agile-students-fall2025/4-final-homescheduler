@@ -6,7 +6,9 @@ import './FamilySchedule.css';
 import { NavMenu } from "./NavMenu";
 import { Link } from "react-router-dom";
 
-const API_URL = 'http://localhost:3001/api';
+const API_URL_PERSONAL = 'http://localhost:3001/api';
+const API_URL_FAMILY   = 'http://localhost:3001/api/calendar';
+
 
 console.log("--- CombinedSchedule component file was loaded ---");
 
@@ -16,12 +18,18 @@ export function CombinedSchedule() {
   const [events, setEvents] = useState([]);
   const userData = JSON.parse(localStorage.getItem("user"));
   const CURRENT_USER = userData?.name;
+  const userFamilyId = userData?.familyId;
 
   // Only events that correspond to user OR family events
-  const myEvents = events.filter(
-     (e) => e.extendedProps?.user === CURRENT_USER ||
-     e.extendedProps?.isFamily === true
-   );
+  const myEvents = events.filter((e) => {
+    const eventUser = e.extendedProps?.user || e.user;
+    const isFamily =
+      e.extendedProps?.isFamily === true || e.isFamily === true;
+    const famId = 
+      e.extendedProps?.familyId === true || e.familyId;
+
+    return eventUser === CURRENT_USER || (isFamily && famId === userFamilyId);
+  });
   // --- Data Fetching ---
   // 1. Fetch events from the backend when the component mounts
   useEffect(() => {
@@ -30,17 +38,27 @@ export function CombinedSchedule() {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch(`${API_URL}/events`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      // Fetch personal & family events
+      const [personalRes, familyRes] = await Promise.all([
+        fetch(`${API_URL_PERSONAL}/events?user=${encodeURIComponent(CURRENT_USER)}`),
+        fetch(`${API_URL_FAMILY}/events?user=${encodeURIComponent(CURRENT_USER)}`),
+      ]);
+
+      if (!personalRes.ok || !familyRes.ok) {
+        throw new Error('One calendar failed');
       }
-      const data = await response.json();
-      setEvents(data);
+
+      const personalEvents = await personalRes.json();
+      const familyEvents = await familyRes.json();
+      //combine both calendars
+      const allEvents = personalEvents.concat(familyEvents);
+
+      setEvents(allEvents);
     } catch (error) {
-      console.error('Error fetching events:', error);
-      // You could set an error state here to show the user
+      console.error('Error combining events:', error);
     }
   };
+
 
   // --- Event Handlers ---
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -26,8 +26,8 @@ export function FamilySchedule() {
   });
 
   // Filter for Family Events
-  // Note: If your backend already filters this via the URL, this might be redundant,
-  // but it's safe to keep for client-side display logic.
+  //new
+  
   const familyEvents = events.filter(
      (e) => e.extendedProps?.isFamily === true || e.isFamily === true
    );
@@ -82,7 +82,6 @@ export function FamilySchedule() {
         location: formData.location, // Matches our new Schema
         user: CURRENT_USER,
         isFamily: true,
-        //familyId: familyId || null,
       };
 
       try {
@@ -115,7 +114,7 @@ export function FamilySchedule() {
         extendedProps: {
           location: formData.location,
           user: originalEvent.extendedProps?.user || CURRENT_USER,
-          isFamily: true
+          isFamily: true,
         }
       };
 
@@ -136,7 +135,7 @@ export function FamilySchedule() {
     closeModal();
   };
 
-  // [DELETE]
+  // delete
   const handleDelete = async () => {
     const eventId = modalState.eventData.id;
     try {
@@ -151,8 +150,7 @@ export function FamilySchedule() {
     }
     closeModal();
   };
-
-  // [DRAG AND DROP / RESIZE]
+// drag & drop
   const handleEventChange = async (changeInfo) => {
     const event = changeInfo.event;
 
@@ -162,11 +160,11 @@ export function FamilySchedule() {
       start: event.startStr,
       end: event.endStr,
       allDay: event.allDay,
-      // Pass extendedProps so "location" isn't lost during a drag
+
       extendedProps: {
         location: event.extendedProps.location,
         user: event.extendedProps.user,
-        isFamily: event.extendedProps.isFamily
+        isFamily: event.extendedProps.isFamily,
       }
     };
 
@@ -184,7 +182,7 @@ export function FamilySchedule() {
       setEvents(events.map((e) => (e.id === savedEvent.id ? savedEvent : e)));
     } catch (error) {
       console.error('Error updating event (drag/drop):', error);
-      changeInfo.revert(); // Snap back if error
+      changeInfo.revert(); 
     }
   };
 
@@ -198,7 +196,7 @@ export function FamilySchedule() {
         <Link to="/familyschedule"><button className="fam-cal">Family Calendar</button></Link>
         <Link to="/combinedschedule"><button className="com-cal">Combined Calendar</button></Link>
       </div>
-      
+
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
