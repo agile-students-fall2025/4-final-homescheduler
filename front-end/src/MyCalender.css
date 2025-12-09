@@ -179,8 +179,10 @@ body {
   list-style: none;
   margin: 8px 0 0;
   padding: 0;
-  display: grid;
-  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;     
+  align-items: flex-start;   /* ← THIS is the key line */
 }
 
 /* each reminder card */
@@ -188,9 +190,9 @@ body {
   background: #ffffff;
   border: 1px solid #d5d2c9;
   border-radius: 10px;
-  padding: 8px 10px;
-  display: grid;
-  gap: 4px;
+  padding: 12px;
+  flex: 1 1 calc(50% - 16px);   /* ← TWO COLUMNS */
+  box-sizing: border-box;
   transition: box-shadow .2s ease, transform .06s ease;
 }
 
@@ -213,22 +215,28 @@ body {
 
 /* title text */
 .reminder-title {
-  color: #051D01;
   font-weight: 600;
-  font-size: 14px;
 }
 
 /* “Due soon” pill */
 .reminder-badge {
-  margin-left: auto;
-  font-size: 11px;
-  padding: 2px 6px;
-  border-radius: 999px;
-  border: 1px solid #9bb093;
-  background: #eaf3e6;
-  color: #4a643f;
+  margin-left: 0;      
+  margin-right: 8px;  
+}
+.reminder-edit-btn {
+  margin-left: auto;           /* pushes it to the far right */
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid #ccc;
+  background: transparent;
+  font-size: 0.75rem;
+  cursor: pointer;
 }
 
+.reminder-edit-btn:hover {
+  border-color: #888;
+  background-color: rgba(255, 255, 255, 0.08);
+}
 /* meta row: due date + optional notes */
 .reminder-meta {
   font-size: 12px;
@@ -245,12 +253,17 @@ body {
 }
 
 /* responsive: two columns on wider screens */
-@media (min-width: 700px) {
-  .reminder-list {
-    grid-template-columns: 1fr 1fr;
-  }
+/* 1 column on small screens */
+.reminder-item {
+  flex: 1 1 100%;
 }
 
+/* 2 columns on wider screens, each card keeps its own height */
+@media (min-width: 700px) {
+  .reminder-item {
+    flex: 1 1 calc(50% - 8px);
+  }
+}
 /* match your green palette for checkbox focus (optional) */
 .reminder-title-row input[type="checkbox"]:focus {
   outline: 2px solid #9bb093;
@@ -258,13 +271,11 @@ body {
 }
 
 .reminder-details {
-  margin-top: 4px;
-  padding-top: 4px;
-  border-top: 1px dashed #d5d2c9;
-  font-size: 12px;
-  color: #324a2c;
+  display: none;
 }
-
+.reminder-item.expanded .reminder-details {
+  display: block;
+}
 .reminder-details p {
   margin: 2px 0;
 }

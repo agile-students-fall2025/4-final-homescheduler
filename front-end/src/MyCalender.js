@@ -21,6 +21,12 @@ export function MyCalendar() {
   const [loadingRem, setLoadingRem] = useState(false);
   const [errRem, setErrRem] = useState("");
   const [expandedReminderId, setExpandedReminderId] = useState(null);
+  const [editingReminderId, setEditingReminderId] = useState(null);
+  const [editReminderValues, setEditReminderValues] = useState({
+    title: '',
+    dueAt: '',
+    notes: '',
+  });
 
   const userData = JSON.parse(localStorage.getItem("user"));
   const CURRENT_USER = userData?.name;
@@ -69,6 +75,18 @@ export function MyCalendar() {
   // Small helpers
   const fmt = (iso) => new Date(iso).toLocaleString();
   const msUntil = (iso) => new Date(iso).getTime() - Date.now();
+  const toDateTimeLocal = (iso) => {
+    if (!iso) return '';
+    const d = new Date(iso);
+    const pad = (n) => String(n).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    const mm = pad(d.getMonth() + 1);
+    const dd = pad(d.getDate());
+    const hh = pad(d.getHours());
+    const min = pad(d.getMinutes());
+    return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+  };
+
 
   const sortedReminders = useMemo(() => {
     return [...reminders].sort((a, b) => new Date(a.dueAt) - new Date(b.dueAt));
@@ -97,6 +115,50 @@ export function MyCalendar() {
       alert("Failed to delete reminder.");
     }
   };
+
+const saveReminderEdit = async (id) => {
+  try {
+    const body = {
+      title: editReminderValues.title,
+      notes: editReminderValues.notes,
+    };
+
+    // convert datetime-local back to ISO if user changed it
+    if (editReminderValues.dueAt) {
+      body.dueAt = new Date(editReminderValues.dueAt).toISOString();
+    }
+
+    const res = await fetch(`${API_URL}/reminders/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const updated = await res.json();
+
+    setReminders((prev) =>
+      prev.map((r) => (r.id === id ? updated : r))
+    );
+    setEditingReminderId(null);
+  } catch (e) {
+    console.error(e);
+    alert('Failed to update reminder.');
+  }
+};
+  const startEditReminder = (r) => {
+    setEditingReminderId(r.id);
+    setEditReminderValues({
+      title: r.title || '',
+      dueAt: toDateTimeLocal(r.dueAt),
+      notes: r.notes || '',
+    });
+  };
+
+  const cancelEditReminder = () => {
+    setEditingReminderId(null);
+  };
+
 
   const fetchEvents = async () => {
     try {
@@ -335,7 +397,9 @@ export function MyCalendar() {
             {sortedReminders.map((r) => (
               <li
                 key={r.id}
-                className={`reminder-item ${r.done ? 'done' : ''}`}
+                className={`reminder-item ${r.done ? 'done' : ''} ${
+                  expandedReminderId === r.id ? 'expanded' : ''
+                }`}
               >
                 {/* Title row is clickable to expand/collapse details */}
                 <div
@@ -351,12 +415,76 @@ export function MyCalendar() {
                   />
                   <span className="reminder-title">{r.title}</span>
                   {dueSoon(r) && <span className="reminder-badge">Due soon</span>}
-                </div>
-                <div className="reminder-meta">
-                  <span className="reminder-due">Due: {fmt(r.dueAt)}</span>
-                  {r.notes ? <span className="reminder-notes"> · {r.notes}</span> : null}
+                
+                  <button
+                    className="reminder-edit-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      startEditReminder(r);
+                    }}
+                  >
+                    Edit
+                  </button>
                 </div>
 
+                {editingReminderId === r.id ? (
+                  <div className="reminder-edit-form">
+                    <label>
+                      Title:
+                      <input
+                        type="text"
+                        value={editReminderValues.title}
+                        onChange={(e) =>
+                          setEditReminderValues((prev) => ({
+                            ...prev,
+                            title: e.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+
+                    <label>
+                      Due at:
+                      <input
+                        type="datetime-local"
+                        value={editReminderValues.dueAt}
+                        onChange={(e) =>
+                          setEditReminderValues((prev) => ({
+                            ...prev,
+                            dueAt: e.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+
+                    <label>
+                      Notes:
+                      <textarea
+                        value={editReminderValues.notes}
+                        onChange={(e) =>
+                          setEditReminderValues((prev) => ({
+                            ...prev,
+                            notes: e.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+
+                    <div className="reminder-edit-actions">
+                      <button type="button" onClick={() => saveReminderEdit(r.id)}>
+                        Save
+                      </button>
+                      <button type="button" onClick={cancelEditReminder}>
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+
+                <div className="reminder-meta">
+                  <span className="reminder-due">Due: {fmt(r.dueAt)}</span>
+                </div>
+                )}
                 {/* Extra details only when expanded */}
                 {expandedReminderId === r.id && (
                   <div className="reminder-details">
