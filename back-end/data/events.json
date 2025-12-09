@@ -77,51 +77,27 @@
     }
   },
   {
-    "id": "05479e5f-6810-48ba-8028-bf302a00c687",
-    "title": "core-1",
-    "start": "2025-12-12T00:00:00",
+    "id": "9b351ba6-deba-4844-80ba-344d048c3a91",
+    "title": "Gym",
+    "start": "2025-12-16T09:00:00",
     "allDay": false,
     "extendedProps": {
-      "location": "zones-1",
-      "user": "Jibril Wague",
+      "location": "",
+      "user": "Brandon Rodriguez",
       "isFamily": false,
       "familyId": null
     }
   },
   {
-    "id": "ef04cfad-4153-4a5d-9e31-b3a929b0f094",
-    "title": "data-01",
-    "start": "2025-12-18T09:00:00",
+    "id": "32f4f7d2-ce3c-4a67-b18a-b253bc057984",
+    "title": "PERS",
+    "start": "2025-12-08T09:00:00",
     "allDay": false,
     "extendedProps": {
-      "location": "loc-01",
-      "user": "Jibril Wague",
+      "location": "",
+      "user": "Test Acc",
       "isFamily": false,
-      "familyId": null
-    }
-  },
-  {
-    "id": "a1745428-996a-4f11-a773-d885796bdff7",
-    "title": "finals",
-    "start": "2025-12-10T00:00:00",
-    "allDay": false,
-    "extendedProps": {
-      "location": "cantor",
-      "user": "tester1 test1",
-      "isFamily": false,
-      "familyId": null
-    }
-  },
-  {
-    "id": "06e99593-7819-456a-bbc6-f94a36eb1d81",
-    "title": "freedom",
-    "start": "2025-12-12T09:00:00",
-    "allDay": false,
-    "extendedProps": {
-      "location": "class",
-      "user": "tester1 test1",
-      "isFamily": false,
-      "familyId": null
+      "family": null
     }
   }
 ]
