@@ -7,9 +7,10 @@ require('dotenv').config(); // Load env variables
 // Import Routers
 const userRoutes = require('./controllers/userControl');
 const eventRoutes = require('./controllers/calender');
-const reminderRoutes = require('./controllers/reminders');
 const CalRoutes = require("./controllers/calenderDB");
-const familyRoutes = require('./controllers/passwordControl');
+const reminderRoutes = require('./controllers/reminders');
+const passwordRoutes = require('./controllers/passwordControl');
+const familyRoutes = require('./controllers/createFamilyControl');
 
 const app = express();
 const PORT = 3001; 
@@ -33,14 +34,11 @@ connectToDb();
 
 // --- Routes ---
 app.use('/api/users', userRoutes);
-//app.use('/api/events', eventRoutes); 
-app.use('/api/events', CalRoutes); 
-
+app.use('/api/events', eventRoutes); 
 app.use('/api/reminders', reminderRoutes);
 app.use('/api/family', familyRoutes);
-
-// This matches the frontend logic we discussed
-// URL will be: http://localhost:3001/api/calendar/events
+app.use('/api/password', passwordRoutes)
+app.use('/api/auth', require('./controllers/auth'));
 app.use('/api/calendar', CalRoutes); 
 
 app.listen(PORT, () => {
