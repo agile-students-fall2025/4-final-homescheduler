@@ -18,6 +18,14 @@
   border-radius: 10px;
 }
 
+.reminder-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #051d01;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
 .reminder-header {
   text-align: center;
   font-size: 32px;
@@ -27,31 +35,50 @@
 }
 
 .reminder-main {
-  width: 280px;
+  width: 100%;
+  max-width: 480px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
+  padding: 32px 24px 40px;
+  margin-top: 8px;
+  background-color: #f6fbf3;
+  border-radius: 24px;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.06);
 }
 
+/* custom arrow */
+.select-row::after {
+  content: "▾";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #295024;
+  pointer-events: none;
+}
 .input,
 .textarea,
 .select {
-  margin-bottom: 10px;
   width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid #d1dacd;
   outline: none;
   font-size: 16px;
-  background-color: #fff;
-  transition: border-color 0.3s;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 10px;
+  box-sizing: border-box;   /* <-- add this line */
 }
 
 .input:focus,
 .textarea:focus,
 .select:focus {
-  border-color: #2B5528;
+  border-color: #295024;
+  box-shadow: 0 0 0 3px rgba(41, 80, 36, 0.15);
 }
 
 .label {
@@ -61,25 +88,36 @@
 }
 
 .repeat-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 4px;
+  margin-bottom: 6px;
+}
+
+.repeat-chips {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
+  gap: 8px;
 }
+
 
 .chip {
   border: 1px solid #063204;
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
   background-color: #fff;
   color: #063204;
   cursor: pointer;
   font-size: 15px;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
 }
 
 .chip:hover {
   background-color: #dfece1;
+  transform: translateY(-1px);
 }
 
 .chip.selected {
@@ -93,6 +131,7 @@
   background-color: #063204;
   color: #fff;
   border: none;
+  border-radius: 999px;      /* pill */
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
@@ -101,6 +140,8 @@
 
 .btn-primary:hover {
   background-color: #2B5528;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(6, 50, 4, 0.25);
 }
 
 .reminder-footer {
@@ -109,6 +150,12 @@
   justify-content: space-between;
   width: 100%;
   max-width: 360px;
+}
+
+.reminder-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .nav-btn {
@@ -160,4 +207,15 @@
   background-color: #fde7e9;
   color: #9b1c1f;
   border: 1px solid #9b1c1f;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.input.small {
+  flex: 1;
+  margin-bottom: 0; /* row itself already has margin */
 }

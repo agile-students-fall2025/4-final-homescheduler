@@ -182,7 +182,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;     
-  align-items: flex-start;   /* ← THIS is the key line */
+  align-items: flex-start;
 }
 
 /* each reminder card */
@@ -211,11 +211,6 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-/* title text */
-.reminder-title {
-  font-weight: 600;
 }
 
 /* “Due soon” pill */
@@ -279,4 +274,3 @@ body {
 .reminder-details p {
   margin: 2px 0;
 }
-
