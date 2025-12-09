@@ -8,6 +8,8 @@ import { NavMenu } from "./NavMenu";
 import { Link } from "react-router-dom";
 
 const API_URL = 'http://localhost:3001/api/calendar';
+const REM_API_URL = 'http://localhost:3001/api/reminders';
+
 
 console.log("--- MySchedule component file was loaded ---");
 
@@ -28,7 +30,6 @@ export function MyCalendar() {
     dueAt: '',
     notes: '',
   });
-  const [expandedReminderId, setExpandedReminderId] = useState(null);
 
   const userData = JSON.parse(localStorage.getItem("user"));
   const CURRENT_USER = userData?.name;
@@ -56,7 +57,7 @@ export function MyCalendar() {
       setErrRem("");
       // Adjust this URL to match your backend route
       const res = await fetch(
-        `${API_URL}/reminders?user=${encodeURIComponent(CURRENT_USER)}`, 
+        `${REM_API_URL}/reminders?user=${encodeURIComponent(CURRENT_USER)}`, 
       {
         headers: { 'Content-Type': 'application/json' }
       });
@@ -96,27 +97,17 @@ export function MyCalendar() {
   const dueSoon = (r) => msUntil(r.dueAt) <= 1000 * 60 * 60 && msUntil(r.dueAt) > 0; // within 1h
 
   const toggleExpandedReminder = (id) => {
-  setExpandedReminderId((prev) => (prev === id ? null : id));
-  };
-
-  const deleteReminder = async (r) => {
-  const toggleExpandedReminder = (id) => {
-  setExpandedReminderId((prev) => (prev === id ? null : id));
+    setExpandedReminderId((prev) => (prev === id ? null : id));
   };
 
   const deleteReminder = async (r) => {
     try {
-      // Adjust to your backend verb/route
-      const res = await fetch(`${API_URL}/reminders/${r.id}`, {
+      const res = await fetch(`${REM_API_URL}/${r.id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       });
 
-
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-      // Remove from local state
-      setReminders((prev) => prev.filter((x) => x.id !== r.id));
 
       // Remove from local state
       setReminders((prev) => prev.filter((x) => x.id !== r.id));
@@ -138,7 +129,7 @@ const saveReminderEdit = async (id) => {
       body.dueAt = new Date(editReminderValues.dueAt).toISOString();
     }
 
-    const res = await fetch(`${API_URL}/reminders/${id}`, {
+    const res = await fetch(`${REM_API_URL}/reminders/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
