@@ -15,6 +15,9 @@ export default function Reminder() {
     notify: "",
   });
 
+  const [statusMessage, setStatusMessage] = useState("");   // ⬅️ NEW
+  const [statusType, setStatusType] = useState("");         // "success" | "error
+
   const toggleRepeat = (value) => {
     setForm((prev) => {
       const has = prev.repeat.includes(value);
@@ -34,14 +37,23 @@ const handleSubmit = async (e) => {
 
   // rudimentary validation
   if (!form.title.trim()) {
-    alert("Please enter a reminder title.");
+    setStatusType("error")
+    setStatusMessage("Please enter a reminder title.");
+  setTimeout(() => {
+    setStatusMessage("");
+    setStatusType("");
+  }, 8000);
     return;
   }
   if (!(form.month && form.day && form.year && form.time)) {
-    alert("Please fill in date and time.");
+    setStatusType("error");
+    setStatusMessage("Please fill in date and time.");
+    setTimeout(() => {
+    setStatusMessage("");
+    setStatusType("");
+  }, 4000);
     return;
   }
-
   // Build the payload for backend
   const payload = {
     title: form.title,
@@ -64,13 +76,20 @@ const handleSubmit = async (e) => {
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       console.error("Failed to create reminder:", err);
-      alert("Failed to create reminder.");
+      setStatusType("error");
+      setStatusMessage("Sorry, something went wrong while saving your reminder.");
       return;
     }
 
     const newReminder = await res.json();
     console.log("Reminder created:", newReminder);
-    alert("Reminder added successfully!");
+
+    setStatusType("success");
+    setStatusMessage("Your reminder was added successfully!");
+    setTimeout(() => {
+      setStatusMessage("");
+      setStatusType("");
+    }, 4000);
 
     // clear form after successful submission
     setForm({
@@ -85,7 +104,8 @@ const handleSubmit = async (e) => {
     });
   } catch (error) {
     console.error("Network or server error:", error);
-    alert("Could not connect to the server.");
+    setStatusType("error");
+    setStatusMessage("Could not connect to the server. Please try again.");
   }
 };
 
@@ -103,7 +123,11 @@ const handleSubmit = async (e) => {
       <main className="reminder-main">
         <h1 className="reminder-title">Add a reminder</h1>
 
-        {/* */}
+        {statusMessage && (
+          <div className={`status-banner ${statusType}`}>
+            {statusMessage}
+          </div>
+        )}
 
         <form className="reminder-form" onSubmit={handleSubmit}>
           <input
@@ -203,7 +227,6 @@ const handleSubmit = async (e) => {
               <option value="1h">1 hour before</option>
               <option value="1d">1 day before</option>
             </select>
-            <span className="select-caret" aria-hidden>▾</span>
           </div>
 
           <div className="cta-row">
