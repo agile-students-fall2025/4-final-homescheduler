@@ -81,3 +81,19 @@
   margin: 0 10px;
   max-width: 40%;
 }
+.code-input-wrapper {
+    position: relative;
+    width: 175px;
+}
+
+.generate-icon {
+    position: absolute;
+    right: 25px;
+    top: 56%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    padding: 0;
+}

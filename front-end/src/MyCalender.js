@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid'; // ADDED: For Week/Day view
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventModal } from './EventMod';
 import './MyCalender.css';
-
 import { NavMenu } from "./NavMenu";
 import { Link } from "react-router-dom";
 
-const API_URL = 'http://localhost:3001/api';
+const API_URL = 'http://localhost:3001/api/calendar';
 
 console.log("--- MySchedule component file was loaded ---");
+
+// Replaced all instances of CURRENT_USER = "Me"
+// Locally accesses user data to create event & filter events
 
 export function MyCalendar() {
   console.log("--- MySchedule component IS RENDERING ---")
@@ -20,6 +21,7 @@ export function MyCalendar() {
   const [reminders, setReminders] = useState([]);
   const [loadingRem, setLoadingRem] = useState(false);
   const [errRem, setErrRem] = useState("");
+  const [expandedReminderId, setExpandedReminderId] = useState(null);
 
   const userData = JSON.parse(localStorage.getItem("user"));
   const CURRENT_USER = userData?.name;
@@ -34,9 +36,9 @@ export function MyCalendar() {
   return events.filter(
     (e) =>
       // Events with user that corresponds to current user and no family events
-      e.extendedProps?.user === CURRENT_USER &&
-      (e.extendedProps?.isFamily === false ||
-       typeof e.extendedProps?.isFamily === 'undefined')
+      e.user === CURRENT_USER &&
+      (e.isFamily === false ||
+       typeof e.isFamily === 'undefined')
   );
 }, [events, CURRENT_USER]);
 
@@ -63,7 +65,6 @@ export function MyCalendar() {
     }
   },[CURRENT_USER]);
 
-  
 
   // Small helpers
   const fmt = (iso) => new Date(iso).toLocaleString();
@@ -75,27 +76,31 @@ export function MyCalendar() {
 
   const dueSoon = (r) => msUntil(r.dueAt) <= 1000 * 60 * 60 && msUntil(r.dueAt) > 0; // within 1h
 
-  const toggleDone = async (r) => {
+  const toggleExpandedReminder = (id) => {
+  setExpandedReminderId((prev) => (prev === id ? null : id));
+  };
+
+  const deleteReminder = async (r) => {
     try {
-      // Adjust to your backend verb/route
-      const res = await fetch(`http://localhost:3001/api/reminders/${r.id}`, {
-        method: 'PATCH',
+      const res = await fetch(`${API_URL}/reminders/${r.id}`, {
+        method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ done: !r.done })
       });
+
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setReminders((prev) =>
-        prev.map((x) => (x.id === r.id ? { ...x, done: !r.done } : x))
-      );
+
+      // Remove from local state
+      setReminders((prev) => prev.filter((x) => x.id !== r.id));
     } catch (e) {
       console.error(e);
-      alert("Failed to update reminder.");
+      alert("Failed to delete reminder.");
     }
   };
 
-  const fetchEvents = async () => {
+
+  const fetchEvents = useCallback( async () => {
     try {
-      const response = await fetch(`${API_URL}/events`);
+      const response = await fetch(`${API_URL}/events?user=${encodeURIComponent(CURRENT_USER)}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -103,15 +108,14 @@ export function MyCalendar() {
       setEvents(data);
     } catch (error) {
       console.error('Error fetching events:', error);
-      // You could set an error state here to show the user
     }
-  };
+  },[CURRENT_USER]);
    // --- Data Fetching ---
   // 1. Fetch events from the backend when the component mounts
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [fetchEvents]);
 
   useEffect(() => {
     fetchReminders();
@@ -164,6 +168,7 @@ export function MyCalendar() {
         location: formData.location,
         user: CURRENT_USER, // Add the current user
         isFamily: false,
+        family: null
       };
 
       try {
@@ -195,7 +200,8 @@ export function MyCalendar() {
         extendedProps: {
           ...originalEvent.extendedProps,
           location: formData.location,
-          isFamily: false
+          isFamily: false, 
+          family: originalEvent.extendedProps?.family ?? null
           // We don't update the 'user' here, as we're just editing.
           // You could add an 'lastEditedBy' field if you wanted.
         },
@@ -282,37 +288,27 @@ export function MyCalendar() {
       <h2 id="mySchedule">My Calendar</h2>
       <p id="instruction">Select a date to add / edit an event.</p>
       <NavMenu />
-            <div className="calendar-toggle">
-          
-        
-<Link to="/myschedule">
-  <button className="my-cal">My Calendar</button>
-</Link>
-  <Link to="/familyschedule">
-  <button className="fam-cal">Family Calendar</button>
-</Link>
-<Link to="/combinedschedule">
-  <button className="com-cal">Combined Calendar</button>
-  </Link>
+      <div className="calendar-toggle">
+        <Link to="/myschedule">
+          <button className="my-cal">My Calendar</button>
+        </Link>
+        <Link to="/familyschedule">
+          <button className="fam-cal">Family Calendar</button>
+        </Link>
+        <Link to="/combinedschedule">
+          <button className="com-cal">Combined Calendar</button>
+        </Link>
+      </div>
 
-        </div>
       <FullCalendar
-        // UPDATED: ADDED timeGridPlugin
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} 
-        
-        // ADDED: CONFIGURATION FOR MONTH/WEEK/DAY BUTTONS
-        headerToolbar={{
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay' 
-        }}
+        plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={myEvents} 
+        events={myEvents} // Events now come from state, which is fed by the API
         selectable={true}
-        editable={true} 
+        editable={true} // Enables drag-and-drop
         select={handleSelect}
         eventClick={handleEventClick}
-        eventChange={handleEventChange} 
+        eventChange={handleEventChange} // Called on drag/drop
       />
 
       <div className="reminder-section">
@@ -328,21 +324,47 @@ export function MyCalendar() {
         {!loadingRem && !errRem && sortedReminders.length > 0 && (
           <ul className="reminder-list">
             {sortedReminders.map((r) => (
-              <li key={r.id} className={`reminder-item ${r.done ? 'done' : ''}`}>
-                <div className="reminder-title-row">
+              <li
+                key={r.id}
+                className={`reminder-item ${r.done ? 'done' : ''}`}
+              >
+                <div
+                  className="reminder-title-row"
+                  onClick={() => toggleExpandedReminder(r.id)}
+                >
                   <input
                     type="checkbox"
-                    checked={!!r.done}
-                    onChange={() => toggleDone(r)}
-                    aria-label="mark reminder done"
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={() => deleteReminder(r)}
+                    aria-label="complete and delete reminder"
                   />
                   <span className="reminder-title">{r.title}</span>
                   {dueSoon(r) && <span className="reminder-badge">Due soon</span>}
                 </div>
+
                 <div className="reminder-meta">
                   <span className="reminder-due">Due: {fmt(r.dueAt)}</span>
                   {r.notes ? <span className="reminder-notes"> · {r.notes}</span> : null}
                 </div>
+
+                {expandedReminderId === r.id && (
+                  <div className="reminder-details">
+                    <p>
+                      <strong>Description:</strong>{" "}
+                      {r.notes || "No description provided."}
+                    </p>
+                    <p>
+                      <strong>Repeat:</strong>{" "}
+                      {Array.isArray(r.repeat) && r.repeat.length > 0
+                        ? r.repeat.join(", ")
+                        : "None"}
+                    </p>
+                    <p>
+                      <strong>Notify:</strong>{" "}
+                      {typeof r.notify === "boolean" ? (r.notify ? "Yes" : "No") : "Not set"}
+                    </p>
+                  </div>
+                )}
               </li>
             ))}
           </ul>

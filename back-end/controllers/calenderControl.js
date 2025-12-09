@@ -15,7 +15,7 @@ const writeEvents = (data) => {
 };
 
 exports.getEvents =  async (req, res) => {
-  const { isFamily, familyId } = req.query;
+  const { isFamily, family } = req.query;
   let events = readEvents();
 //if family calendar
   if (isFamily == "true"){
@@ -29,29 +29,26 @@ exports.getEvents =  async (req, res) => {
       event =>
         (event.extendedProps?.isFamily === false));
     }
-  if (familyId){
-    events = events.filter(
-      event =>
-        (event.extendedProps?.familyId === familyId));
+  if (family){
+    events = events.filter(e => e.extendedProps?.family === family);
   }
 
   res.json(events);
 };
 
-  
 //post
   exports.createEvent = async (req, res) => {
-    const { title, start, location, user, isFamily, familyId } = req.body;
+    const { title, start, location, user, isFamily, family } = req.body;
   
     if (!title || !start || !user) {
       return res
         .status(400)
         .json({ error: 'Missing required fields: title, start, user' });
     }
-    if (isFamily && !familyId) {
+    if (isFamily && !family) {
       return res
         .status(400)
-        .json({ error: 'Missing required fields: family ID' });
+        .json({ error: 'Missing required fields: family code' });
 
     }
 
@@ -65,10 +62,10 @@ exports.getEvents =  async (req, res) => {
       allDay: false, // You can make this part of the request body if needed
       extendedProps: {
         location: location || '',
-        user: user, 
-        isFamily: !!isFamily,
+        user, 
+        isFamily: Boolean(isFamily),
         // need to create familyId
-        familyId: familyId || null,
+        family: family ? String(family) : null
       },
     };
 
@@ -115,4 +112,4 @@ exports.getEvents =  async (req, res) => {
     writeEvents(eventData);
 
     return res.status(200).json({message: "Event deleted successfully"});
-    };
+    }; 
