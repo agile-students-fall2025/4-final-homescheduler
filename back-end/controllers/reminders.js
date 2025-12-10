@@ -52,7 +52,23 @@ router.get("/:id", (req, res) => {
 // POST /api/reminders -> create from form-shaped body
 router.post("/", async (req, res) => {
   try {
-    const reminder = await Reminder.create(req.body);
+    const { month, day, year, time, ...rest } = req.body;
+
+    // Build dueAt from month/day/year/time
+    const built = buildDueAtFromForm({ month, day, year, time });
+    if (!built.ok) {
+      return res.status(400).json({ error: built.error });
+    }
+
+    const reminder = await Reminder.create({
+      ...rest,
+      dueAt: built.iso,
+      month,
+      day,
+      year,
+      time,
+    });
+
     res.status(201).json(reminder);
   } catch (err) {
     res.status(400).json({ error: "Failed to create reminder" });
