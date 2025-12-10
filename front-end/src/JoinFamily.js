@@ -11,16 +11,10 @@ export function JoinFamily(){
     const navigate = useNavigate();
 
     const generateCode = () => {
-        const arr = new Uint8Array(3);
-        window.crypto.getRandomValues(arr);
-
-        const hex = Array.from(arr)
-            .map(b => b.toString(16).padStart(2, '0'))
-            .join('')
-            .toUpperCase();
-        
-        setfamCode(hex);
-    }
+        const uuid = crypto.randomUUID();  // browser API
+        const short = uuid.split("-")[0].toUpperCase(); // 8 chars
+        setfamCode(short);
+    };
 
     const handleJoin = async (e) => {
         e.preventDefault();
