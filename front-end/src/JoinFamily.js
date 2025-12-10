@@ -14,11 +14,13 @@ export function JoinFamily(){
         const arr = new Uint8Array(4);  // 4 random bytes
         window.crypto.getRandomValues(arr);
 
-        return Array.from(arr)
+        const hex = Array.from(arr)
             .map(b => b.toString(16).padStart(2, "0"))
             .join("")
             .toUpperCase();
             // Example: "3FA94D21"
+        setfamCode(hex);
+        return hex;
     };
 
 
@@ -65,7 +67,6 @@ export function JoinFamily(){
             return;
         }
         const newCode = generateCode();
-        setfamCode(newCode);
 
         try {
             const token = localStorage.getItem("token");
