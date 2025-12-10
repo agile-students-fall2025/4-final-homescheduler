@@ -11,7 +11,7 @@ export function JoinFamily(){
     const navigate = useNavigate();
 
     const generateCode = () => {
-        const uuid = crypto.randomUUID();  // browser API
+        const uuid = window.crypto.randomUUID();  // browser API
         const short = uuid.split("-")[0].toUpperCase(); // 8 chars
         setfamCode(short);
     };
@@ -83,7 +83,7 @@ export function JoinFamily(){
                 return; 
             }
             const stored = JSON.parse(localStorage.getItem("user"));
-            stored.family = data.familyId;        // <-- MUST BE RETURNED BY BACKEND
+            stored.family = data.familyId;        
             localStorage.setItem("user", JSON.stringify(stored));
             
             alert(`Family created! Your invite code is: ${data.familyCode}`);
