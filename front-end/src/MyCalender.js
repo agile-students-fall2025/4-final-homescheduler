@@ -57,7 +57,7 @@ export function MyCalendar() {
       setErrRem("");
       // Adjust this URL to match your backend route
       const res = await fetch(
-        `${REM_API_URL}/reminders?user=${encodeURIComponent(CURRENT_USER)}`, 
+        `${REM_API_URL}/?user=${encodeURIComponent(CURRENT_USER)}`, 
       {
         headers: { 'Content-Type': 'application/json' }
       });
@@ -102,7 +102,7 @@ export function MyCalendar() {
 
   const deleteReminder = async (r) => {
     try {
-      const res = await fetch(`${REM_API_URL}/${r.id}`, {
+      const res = await fetch(`${REM_API_URL}/${r._id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -110,7 +110,7 @@ export function MyCalendar() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       // Remove from local state
-      setReminders((prev) => prev.filter((x) => x.id !== r.id));
+      setReminders((prev) => prev.filter((x) => x.id !== r._id));
     } catch (e) {
       console.error(e);
       alert("Failed to delete reminder.");
@@ -129,7 +129,7 @@ const saveReminderEdit = async (id) => {
       body.dueAt = new Date(editReminderValues.dueAt).toISOString();
     }
 
-    const res = await fetch(`${REM_API_URL}/reminders/${id}`, {
+    const res = await fetch(`${REM_API_URL}/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -139,7 +139,7 @@ const saveReminderEdit = async (id) => {
     const updated = await res.json();
 
     setReminders((prev) =>
-      prev.map((r) => (r.id === id ? updated : r))
+      prev.map((r) => (r._id === id ? updated : r))
     );
     setEditingReminderId(null);
   } catch (e) {
@@ -148,7 +148,7 @@ const saveReminderEdit = async (id) => {
   }
 };
   const startEditReminder = (r) => {
-    setEditingReminderId(r.id);
+    setEditingReminderId(r._id);
     setEditReminderValues({
       title: r.title || '',
       dueAt: toDateTimeLocal(r.dueAt),
@@ -389,15 +389,15 @@ const saveReminderEdit = async (id) => {
           <ul className="reminder-list">
             {sortedReminders.map((r) => (
               <li
-                key={r.id}
+                key={r._id}
                 className={`reminder-item ${r.done ? 'done' : ''} ${
-                  expandedReminderId === r.id ? 'expanded' : ''
+                  expandedReminderId === r._id ? 'expanded' : ''
                 }`}
               >
                 {/* Title row is clickable to expand/collapse details */}
                 <div
                   className="reminder-title-row"
-                  onClick={() => toggleExpandedReminder(r.id)}
+                  onClick={() => toggleExpandedReminder(r._id)}
                 >
                   {/* Checkbox: mark complete & delete (no longer a “toggle done” only) */}
                   <input
@@ -420,7 +420,7 @@ const saveReminderEdit = async (id) => {
                   </button>
                 </div>
 
-                {editingReminderId === r.id ? (
+                {editingReminderId === r._id ? (
                   <div className="reminder-edit-form">
                     <label>
                       Title:
@@ -464,7 +464,7 @@ const saveReminderEdit = async (id) => {
                     </label>
 
                     <div className="reminder-edit-actions">
-                      <button type="button" onClick={() => saveReminderEdit(r.id)}>
+                      <button type="button" onClick={() => saveReminderEdit(r._id)}>
                         Save
                       </button>
                       <button type="button" onClick={cancelEditReminder}>
@@ -479,7 +479,7 @@ const saveReminderEdit = async (id) => {
                 </div>
                 )}
                 {/* Extra details only when expanded */}
-                {expandedReminderId === r.id && (
+                {expandedReminderId === r._id && (
                   <div className="reminder-details">
                     <p>
                       <strong>Description:</strong>{" "}
