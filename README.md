@@ -76,6 +76,7 @@ Currently there is only frontend code so only react and some of its dependices n
     ```bash
     cd node server.js
     ```
+An alternatieve way to run the application is through the web: http://167.99.58.204/
 
 2.  Open your browser and navigate to `http://localhost:3000` to see the application.
 
