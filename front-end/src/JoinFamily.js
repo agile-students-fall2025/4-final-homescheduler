@@ -14,12 +14,11 @@ export function JoinFamily(){
         const arr = new Uint8Array(4);  // 4 random bytes
         window.crypto.getRandomValues(arr);
 
-        const hex = Array.from(arr)
-        .map(b => b.toString(16).padStart(2, "0"))
-        .join("")
-        .toUpperCase();
-
-        setfamCode(hex);   // Example: "3FA94D21"
+        return Array.from(arr)
+            .map(b => b.toString(16).padStart(2, "0"))
+            .join("")
+            .toUpperCase();
+            // Example: "3FA94D21"
     };
 
 
@@ -45,8 +44,8 @@ export function JoinFamily(){
             const data = await res.json();
 
             if (!res.ok) {
-            alert("Something went wrong. Please try again.");
-            return;
+                alert(data.message || "Something went wrong. Please try again.");
+                return;
             }
 
             alert(`Joined family: ${data.familyName}`);
@@ -65,12 +64,9 @@ export function JoinFamily(){
             alert("Provide a family name");
             return;
         }
-        generateCode();
+        const newCode = generateCode();
+        setfamCode(newCode);
 
-        if (!famCode){
-            alert("Provide a family code");
-            return;
-        }
         try {
             const token = localStorage.getItem("token");
             const res = await fetch("/api/family", {
@@ -81,7 +77,7 @@ export function JoinFamily(){
                 },
                 body: JSON.stringify({
                     familyName: famName,
-                    familyCode: famCode
+                    familyCode: newCode
                 }),
             });
             const data = await res.json();
