@@ -48,7 +48,7 @@ export function Login() {
   return (
     <div className="login-container">
       <img src={logo} alt="App Logo" className="app-logo" />
-      <h2 className="login-title">Login and Test</h2>
+      <h2 className="login-title">Login Test 2</h2>
 
       <form onSubmit={handleSubmit} className="login-form">
         <label>Email</label>
