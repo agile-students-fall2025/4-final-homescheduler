@@ -31,7 +31,7 @@ export function ChangePassword(){
                 return;
             }
 
-            const res = await fetch("http://localhost:3001/api/family/change_password", {
+            const res = await fetch("/api/family/change_password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
                 body: JSON.stringify({email, currpassword, newpassword }),

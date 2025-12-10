@@ -26,7 +26,7 @@ export function JoinFamily(){
         try {
             const token = localStorage.getItem("token");
 
-            const res = await fetch("http://localhost:3001/api/family/join", {
+            const res = await fetch("/api/family/join", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -66,7 +66,7 @@ export function JoinFamily(){
         }
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("http://localhost:3001/api/family", {
+            const res = await fetch("/api/family", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
