@@ -24,7 +24,7 @@ export function FamilySchedule() {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const res = await fetch("http://localhost:3001/api/auth/me", {
+      const res = await fetch("/api/auth/me", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
