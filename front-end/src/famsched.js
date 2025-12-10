@@ -51,7 +51,6 @@ export function FamilySchedule() {
 
     const fetchEvents = async () => {
 
-      
       try {
         const res = await fetch(
           `${API_URL}/events?user=${encodeURIComponent(user.name)}`
@@ -70,39 +69,6 @@ export function FamilySchedule() {
   // 3) While user is loading, show loading
   if (!user) {
     return <div>Loading user...</div>;
-  }
-
-  if (!user.family){
-    
-    return (
-      <div className="calendar-wrapper">
-      <h2 id="familySchedule">Family Calendar</h2>
-      <p id="instruction">Join a family in settings</p>
-
-      <NavMenu />
-
-      <div className="calendar-toggle">
-        <Link to="/myschedule">
-          <button className="my-cal">My Calendar</button>
-        </Link>
-        <Link to="/familyschedule">
-          <button className="fam-cal">Family Calendar</button>
-        </Link>
-        <Link to="/combinedschedule">
-          <button className="com-cal">Combined Calendar</button>
-        </Link>
-      </div>
-
-
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={[]}
-        selectable={true}
-        editable={false}
-      />
-      </div>
-    );
   }
 
   const CURRENT_USER = user.name;
@@ -129,7 +95,6 @@ export function FamilySchedule() {
     selectedMember === 'All'
       ? familyEvents
       : familyEvents.filter((event) => {
-          
           const eventUser = event.user;
           if (selectedMember === 'user') {
             return eventUser === CURRENT_USER;
