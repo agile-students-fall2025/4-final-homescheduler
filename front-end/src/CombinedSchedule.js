@@ -6,7 +6,7 @@ import './FamilySchedule.css';
 import { NavMenu } from "./NavMenu";
 import { Link } from "react-router-dom";
 
-const API_URL = 'http://localhost:3001/api/calendar';
+const API_URL = '/api/calendar';
 
 export function CombinedSchedule() {
   const [user, setUser] = useState(null);
@@ -18,7 +18,7 @@ export function CombinedSchedule() {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const res = await fetch("http://localhost:3001/api/auth/me", {
+      const res = await fetch("/api/auth/me", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

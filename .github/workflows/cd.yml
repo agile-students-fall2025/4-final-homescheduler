@@ -1,0 +1,38 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Deploy to Droplet
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Add nvm node to PATH
+            export PATH="/root/.nvm/versions/node/v24.7.0/bin:$PATH"
+            
+            cd /root/4-final-homescheduler
+            
+            # Pull latest code
+            git pull origin master
+            
+            # Backend: Install dependencies and restart
+            cd /root/4-final-homescheduler/back-end
+            npm install
+            pm2 restart backend || pm2 start server.js --name backend --cwd /root/4-final-homescheduler/back-end
+            
+            # Frontend: Build
+            cd /root/4-final-homescheduler/front-end
+            npm install
+            npm run build
+            
+            echo "Successfully deployed"

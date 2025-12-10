@@ -19,7 +19,7 @@ export function ManageAcc(){
             return; 
         }
         try {
-            const res = await fetch('http://localhost:3001/api/family/manage-account',{
+            const res = await fetch('/api/password/manage-account',{
                 method: "POST",
                 headers: {"Content-type": "application/json"},
                 body: JSON.stringify({

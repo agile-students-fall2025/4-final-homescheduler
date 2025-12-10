@@ -11,10 +11,18 @@ export function JoinFamily(){
     const navigate = useNavigate();
 
     const generateCode = () => {
-        const uuid = crypto.randomUUID();  // browser API
-        const short = uuid.split("-")[0].toUpperCase(); // 8 chars
-        setfamCode(short);
+        const arr = new Uint8Array(4);  // 4 random bytes
+        window.crypto.getRandomValues(arr);
+
+        const hex = Array.from(arr)
+            .map(b => b.toString(16).padStart(2, "0"))
+            .join("")
+            .toUpperCase();
+            // Example: "3FA94D21"
+        setfamCode(hex);
+        return hex;
     };
+
 
     const handleJoin = async (e) => {
         e.preventDefault();
@@ -26,7 +34,7 @@ export function JoinFamily(){
         try {
             const token = localStorage.getItem("token");
 
-            const res = await fetch("http://localhost:3001/api/family/join", {
+            const res = await fetch("/api/family/join", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -38,8 +46,8 @@ export function JoinFamily(){
             const data = await res.json();
 
             if (!res.ok) {
-            alert("Something went wrong. Please try again.");
-            return;
+                alert(data.message || "Something went wrong. Please try again.");
+                return;
             }
 
             alert(`Joined family: ${data.familyName}`);
@@ -58,15 +66,11 @@ export function JoinFamily(){
             alert("Provide a family name");
             return;
         }
-        generateCode();
+        const newCode = generateCode();
 
-        if (!famCode){
-            alert("Provide a family code");
-            return;
-        }
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("http://localhost:3001/api/family", {
+            const res = await fetch("/api/family", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -74,7 +78,7 @@ export function JoinFamily(){
                 },
                 body: JSON.stringify({
                     familyName: famName,
-                    familyCode: famCode
+                    familyCode: newCode
                 }),
             });
             const data = await res.json();
@@ -83,7 +87,7 @@ export function JoinFamily(){
                 return; 
             }
             const stored = JSON.parse(localStorage.getItem("user"));
-            stored.family = data.familyId;        // <-- MUST BE RETURNED BY BACKEND
+            stored.family = data.familyId;        
             localStorage.setItem("user", JSON.stringify(stored));
             
             alert(`Family created! Your invite code is: ${data.familyCode}`);
