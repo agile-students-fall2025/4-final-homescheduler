@@ -7,8 +7,8 @@ import './MyCalender.css';
 import { NavMenu } from "./NavMenu";
 import { Link } from "react-router-dom";
 
-const API_URL = 'http://localhost:3001/api/calendar';
-const REM_API_URL = 'http://localhost:3001/api/reminders';
+const API_URL = '/api/calendar';
+const REM_API_URL = '/api/reminders';
 
 
 console.log("--- MySchedule component file was loaded ---");
