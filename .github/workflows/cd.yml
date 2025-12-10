@@ -17,6 +17,9 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # Add nvm node to PATH
+            export PATH="/root/.nvm/versions/node/v24.7.0/bin:$PATH"
+            
             cd /root/4-final-homescheduler
             
             # Pull latest code
@@ -27,6 +30,9 @@ jobs:
             npm install
             pm2 restart backend || pm2 start server.js --name backend --cwd /root/4-final-homescheduler/back-end
             
+            # Frontend: Build
             cd /root/4-final-homescheduler/front-end
             npm install
             npm run build
+            
+            echo "Successfully deployed"
